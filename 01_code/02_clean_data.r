@@ -34,3 +34,4 @@ base_depurada<-base_filtrada%>%filter(y_total_m<=quantile(y_total_m,.99)&y_total
 hist(base_depurada$y_total_m)
 
 summary(base_depurada)
+summary(base)
