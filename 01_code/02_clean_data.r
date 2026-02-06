@@ -1,28 +1,23 @@
 # =============================================================================
-# Project:        PS  Prediction Income
+# Project:        PS Prediction Income
 #
-# Description:    Data scraping and preprocessing from Ignacio's public repository
-#                 for propensity score estimation in income-related outcomes.
+# Description:    Data Cleaning and preprocessing from data chunks
 #
 # Authors:        Sany, Andrés, and Juan
 # Affiliation:    Universidad de Los Andes
 #
-# Created:        2026-02-02
-# Last updated:   2026-02-02
-#
-# Data source:    Ignacio's repository (see README for access details)
-# Script type:    Data acquisition and preparation
+# Fisrt Created:  2026-02-05
+# Last updated:   2026-02-05
 #
 # Reproducibility:
-#   - R version:      ≥ 4.2.0
-#   - Required pkgs:  tidyverse, data.table, httr, jsonlite
-#   - Seed:           set.seed(12345)
+#   - R version: ≥ 4.2.0
+#   - Seed:     set.seed(12345)
 #
 # Output:
 #   - Clean datasets saved in /data/processed/
 #
 # Notes:
-#   - Run this script before estimation and inference scripts.#
+#   - Run this script before estimation and inference scripts.
 # =============================================================================
 
 ## Cargue de la información previamente descargada ##

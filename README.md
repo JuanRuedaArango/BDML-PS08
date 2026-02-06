@@ -1,4 +1,4 @@
-# PROBLEM SET PREDICTION INCOME
+# PROBLEM SET PREDICTING INCOME
 # Authors:
 # - Sany León 
 # - Andrés Camilo Suárez
