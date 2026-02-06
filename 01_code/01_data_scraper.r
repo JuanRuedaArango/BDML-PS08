@@ -1,11 +1,12 @@
-#=============================#
+#========================================================#
+# PS Prediction Income
 # Sany, Andres and Juan
 # Fisrt Created:  02/01/2026
 # Last update:  02/01/2026
-#Script:        Scrapping data
-#============================#
+# Script:       Scrapping data from Ignacio repository
+#======================================================#
 
-# setup 
+# Setup 
 rm(list = ls())
 
 rm(list = ls())
@@ -68,5 +69,6 @@ dictionary = list("dictionarie" = dict,
 #=====================#
 # export
 #=====================#
-export(data, "data_output/01_data_scrapping_web_page.rds")
-export(dictionary, "dictionary.xlsx")
+
+export(data, "BDML-PS08/00_data/01_data_scrapping_web_page.rds")
+export(dictionary, "BDML-PS08/99_additional/dictionary.xlsx")
