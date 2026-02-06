@@ -30,7 +30,4 @@ run = walk(.x = list, .f = function(x){
 )
 
 
-# Step 2: Filters data 
-# The filtered dataset is saved to a temporary folder for downstream use
-
 #source("01_code/02_clean_data.R")
