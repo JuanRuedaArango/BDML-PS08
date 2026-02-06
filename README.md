@@ -1,6 +1,6 @@
 # PROBLEM SET PREDICTION INCOME
 # Authors:
-# - Sany León Curasi
+# - Sany León 
 # - Andrés Camilo Suárez
 # - Juan Rueda
 # BIG DATA AND MACHINE LEARNING - UNIVERSIDAD DE LOS ANDES - 2026 
