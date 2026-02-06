@@ -1,14 +1,29 @@
+#========================================================#
+# PS Prediction Income
+# Sany, Andres and Juan
+# Fisrt Created:  05/02/2026
+# Last update:  05/02/2026
+# Script:       Cleaning data from Ignacio repository
+#======================================================#
+
 ## Cargue de la información previamente descargada ##
 
 base <- readRDS("~/BDML-PS08/01_code/data_output/01_data_scrapping_web_page.rds")
+## nos falta agregar el crunch ##
+
+p_load(dplyr, rvet, tidyverse, data.table)
+
+
 colnames(base)
 
 library(dplyr)
 library(tidyverse)
 
+## Seleccionamos la muestra completa, no una muestra.
+
 base_filtrada<-base%>%filter(age>=18 & ocu==1 & !is.na(y_total_m) & !is.na(sex) & !is.na(age))%>%
   select(age,sex,y_total_m,totalHoursWorked,relab,mes,clase,college,fex_c,informal,maxEducLevel,
-         pet)
+         pet,p6050)
 
 ## salario minimo en 2018 781.242
 ## linea pobreza bogotá 434630, en hogares
@@ -30,6 +45,8 @@ base_filtrada%>%filter(y_total_m>=quantile(y_total_m,.001))%>%group_by(sex)%>%su
 ## base depurada
 
 base_depurada<-base_filtrada%>%filter(y_total_m<=quantile(y_total_m,.99)&y_total_m>=quantile(y_total_m,.001))
+
+
 
 hist(base_depurada$y_total_m)
 
