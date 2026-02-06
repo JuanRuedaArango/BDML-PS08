@@ -1,16 +1,27 @@
-#========================================================#
-# PS Prediction Income
-# Sany, Andres and Juan
-# Fisrt Created:  02/01/2026
-# Last update:  02/01/2026
-# Script:       Scrapping data from Ignacio repository
-#======================================================#
+# =============================================================================
+# Project:        Problem Set – Prediction Income
+#
+# Description:    Data scraping and preprocessing from Ignacio's public repository
+#                 for the income prediction problem set.
+#
+# Authors:        Sany, Andrés, and Juan
+# Affiliation:    Universidad de Los Andes
+#
+# Created:        2026-02-02
+# Last updated:   2026-02-02
+# Reproducibility:
+#   - R version:      ≥ 4.2.0
+#   - Seed:           set.seed(12345)
+#
+# Output:
+#   - Clean datasets saved in /data/
+#
+# Notes:
+# =============================================================================
 
 # Setup 
 rm(list = ls())
-
-rm(list = ls())
-pacman::p_load(rio, rvet, tidyverse, data.table)
+pacman::p_load(rio, rvest, tidyverse, data.table)
 
 #=====================#
 # Import
@@ -70,5 +81,5 @@ dictionary = list("dictionarie" = dict,
 # export
 #=====================#
 
-export(data, "BDML-PS08/00_data/01_data_scrapping_web_page.rds")
-export(dictionary, "BDML-PS08/99_additional/dictionary.xlsx")
+export(data, "00_data/01_data_scrapping_web_page.rds")
+export(dictionary, "99_additional/dictionary.xlsx")

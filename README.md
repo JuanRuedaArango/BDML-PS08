@@ -1,4 +1,4 @@
-# PROBLEM SET BIG DATA AND MACHINE LEARNING 2026-10
+# PROBLEM SET PREDICTING INCOME
 # Authors:
 # - Sany León Curasi
 # - Andrés Camilo Suárez
