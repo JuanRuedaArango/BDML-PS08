@@ -11,7 +11,7 @@
 base <- readRDS("~/BDML-PS08/01_code/data_output/01_data_scrapping_web_page.rds")
 ## nos falta agregar el crunch ##
 
-p_load(dplyr, rvet, tidyverse, data.table)
+p_load(dplyr, rvest, tidyverse, data.table)
 
 
 colnames(base)
