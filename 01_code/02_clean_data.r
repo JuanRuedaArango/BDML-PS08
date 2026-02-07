@@ -23,20 +23,21 @@
 #   - Run this script before estimation and inference scripts.#
 # =============================================================================
 
-## Load previously downloaded data ##
+
+## ---------------------------------------------------------------
+## Load previously downloaded data
+## ---------------------------------------------------------------
 
 rm(list = ls())
 pacman::p_load(tidyverse, rvest, data.table)
 
-base <- readRDS("data_output/01_data_scrapping_web_page.rds")
-## nos falta agregar el crunch ##
+base <- readRDS("00_data/01_data_scrapping_web_page.rds")
 
 colnames(base)
 
-## Select sample.
-#base_filtrada<-base%>%filter(age>=18 & ocu==1 & !is.na(y_total_m) & !is.na(sex) & !is.na(age))%>%
-#  select(age,sex,y_total_m,totalHoursWorked,relab,mes,clase,college,fex_c,informal,maxEducLevel,
-#         pet,p6050, fex_c)
+## ---------------------------------------------------------------
+## Selecting Sample
+## ---------------------------------------------------------------
 
 db <- base %>%
   filter(age >= 18, ocu == 1) %>%
@@ -69,8 +70,18 @@ db = db %>%
   ungroup()
 
 ## Impute missing values of covariates
-db = db %>% 
-  mutate(max_educ_level = ifelse(is.na(max_educ_level) == T,yes = db$max_educ_level %>% Mode(na.rm = T) %>% as.numeric(),no = max_educ_level)) 
+mode_max_educ <- as.numeric(
+  names(which.max(table(db$max_educ_level)))
+)
+
+db <- db %>%
+  mutate(
+    max_educ_level = ifelse(
+      is.na(max_educ_level),
+      mode_max_educ,
+      max_educ_level
+    )
+  )
 
 ## Relabel covariates
 
@@ -221,7 +232,7 @@ db_clean <- db %>%
     y_total_m >= quantile(y_total_m, .001, na.rm = TRUE)
   )
 
-export(db_clean, "00_data/01_main_data.rds")
+saveRDS(db_clean, file = "00_data/01_main_data.rds")
 
 ## ---------------------------------------------------------------
 ## Descriptive checks of the final sample

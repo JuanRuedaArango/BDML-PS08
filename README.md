@@ -7,7 +7,7 @@
 
 This repository contains the complete workflow developed to solve Problem Set 1 for the course Big Data and Machine Learning (2026–10). The project is organized into modular directories that cover each stage of the process, from data scraping and preprocessing to analysis, modeling, and results documentation.
 
-Please run the code contained in the script <i>00_rundirectory.R<i> to replicate the results.
+Please run the code contained in the script <i>00_rundirectory.R to replicate the results.
 
 <!---------------------------->
 
