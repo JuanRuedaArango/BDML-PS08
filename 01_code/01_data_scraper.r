@@ -8,7 +8,7 @@
 # Affiliation:    Universidad de Los Andes
 #
 # Created:        2026-02-02
-# Last updated:   2026-02-02
+# Last updated:   2026-02-06
 #
 # Data source:    Ignacio's repository (see README for access details)
 # Script type:    Data acquisition and preparation
@@ -27,9 +27,7 @@
 
 # Setup 
 rm(list = ls())
-
-rm(list = ls())
-pacman::p_load(rio, rvet, tidyverse, data.table)
+pacman::p_load(rio, rvest, tidyverse, data.table)
 
 #=====================#
 # Import
@@ -89,5 +87,5 @@ dictionary = list("dictionarie" = dict,
 # export
 #=====================#
 
-export(data, "BDML-PS08/00_data/01_data_scrapping_web_page.rds")
-export(dictionary, "BDML-PS08/99_additional/dictionary.xlsx")
+export(data, "00_data/01_data_scrapping_web_page.rds")
+export(dictionary, "99_additional/dictionary.xlsx")

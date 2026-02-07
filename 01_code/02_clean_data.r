@@ -1,21 +1,19 @@
 # =============================================================================
 # Project:        PS  Prediction Income
 #
-# Description:    Data scraping and preprocessing from Ignacio's public repository
-#                 for propensity score estimation in income-related outcomes.
+# Description:    Data cleaning and preprocessing from Ignacio's public repository
 #
 # Authors:        Sany, Andrés, and Juan
 # Affiliation:    Universidad de Los Andes
 #
-# Created:        2026-02-02
-# Last updated:   2026-02-02
+# Created:        2026-02-05
+# Last updated:   2026-02-06
 #
 # Data source:    Ignacio's repository (see README for access details)
 # Script type:    Data acquisition and preparation
 #
 # Reproducibility:
 #   - R version:      ≥ 4.2.0
-#   - Required pkgs:  tidyverse, data.table, httr, jsonlite
 #   - Seed:           set.seed(12345)
 #
 # Output:
@@ -25,49 +23,209 @@
 #   - Run this script before estimation and inference scripts.#
 # =============================================================================
 
-## Cargue de la información previamente descargada ##
+## Load previously downloaded data ##
 
-base <- readRDS("~/BDML-PS08/01_code/data_output/01_data_scrapping_web_page.rds")
+rm(list = ls())
+pacman::p_load(tidyverse, rvest, data.table)
+
+base <- readRDS("data_output/01_data_scrapping_web_page.rds")
 ## nos falta agregar el crunch ##
-
-p_load(dplyr, rvet, tidyverse, data.table)
-
 
 colnames(base)
 
-library(dplyr)
-library(tidyverse)
+## Select sample.
+#base_filtrada<-base%>%filter(age>=18 & ocu==1 & !is.na(y_total_m) & !is.na(sex) & !is.na(age))%>%
+#  select(age,sex,y_total_m,totalHoursWorked,relab,mes,clase,college,fex_c,informal,maxEducLevel,
+#         pet,p6050, fex_c)
 
-## Seleccionamos la muestra completa, no una muestra.
-
-base_filtrada<-base%>%filter(age>=18 & ocu==1 & !is.na(y_total_m) & !is.na(sex) & !is.na(age))%>%
-  select(age,sex,y_total_m,totalHoursWorked,relab,mes,clase,college,fex_c,informal,maxEducLevel,
-         pet,p6050)
-
-## salario minimo en 2018 781.242
-## linea pobreza bogotá 434630, en hogares
-
-### miramos posible estacionalidad
-# al observar los meses no se encuentra estacionalidad
-
-base_filtrada%>%group_by(mes)%>%summarise(mediana=median(y_total_m),promedio=mean(y_total_m),maximo=max(y_total_m),minimo=min(y_total_m))
-
-
-### miramos los cuantiles
-# valores muy altos arriba
-quantile(base_filtrada$y_total_m, c(.001,.9,.95,.99,.995,.999), na.rm=TRUE)
-
-# quiénes son, si los quitamos quedaría fuera una proporción similar de hombres y mujeres
-base_filtrada%>%filter(y_total_m>=quantile(y_total_m,.99))%>%group_by(sex)%>%summarise(n())
-base_filtrada%>%filter(y_total_m>=quantile(y_total_m,.001))%>%group_by(sex)%>%summarise(n())
-
-## base depurada
-
-base_depurada<-base_filtrada%>%filter(y_total_m<=quantile(y_total_m,.99)&y_total_m>=quantile(y_total_m,.001))
+db <- base %>%
+  filter(age >= 18, ocu == 1) %>%
+  select(
+    directorio, secuencia_p, orden,
+    sex, age, college, maxEducLevel,
+    ocu, informal, relab, oficio,
+    totalHoursWorked, y_total_m, y_total_m_ha,
+    p6050, pet, mes, clase, fex_c, inac, sizeFirm
+  ) %>%
+  rename(
+    max_educ_level = maxEducLevel,
+    ocupado        = ocu,
+    total_hours    = totalHoursWorked,
+    parent_hh      = p6050,
+    PET = pet,
+    f_weights      = fex_c,
+    inactivo       = inac,
+    size_firm      = sizeFirm
+  )
 
 
+## Create indicator variables
+db = db %>% 
+  mutate(menores_edad = ifelse(age < 18,1,0),
+         seniors_inactivos = ifelse(age > 65 & inactivo==1,1,0)) %>% 
+  group_by(directorio,secuencia_p) %>% 
+  mutate(total_menores = sum(menores_edad),
+         total_seniors_inactivos = sum(seniors_inactivos)) %>% 
+  ungroup()
 
-hist(base_depurada$y_total_m)
+## Impute missing values of covariates
+db = db %>% 
+  mutate(max_educ_level = ifelse(is.na(max_educ_level) == T,yes = db$max_educ_level %>% Mode(na.rm = T) %>% as.numeric(),no = max_educ_level)) 
 
-summary(base_depurada)
-summary(base)
+## Relabel covariates
+
+### Educacion
+db = db %>%
+  mutate(max_educ_level = case_when(
+    max_educ_level == 1 ~ "Ninguno",
+    max_educ_level == 2 ~ "Preescolar",
+    max_educ_level == 3 ~ "Primaria incompleta",
+    max_educ_level == 4 ~ "Primaria completa",
+    max_educ_level == 5 ~ "Secundaria incompleta",
+    max_educ_level == 6 ~ "Secundaria completa",
+    max_educ_level == 7 ~ "Terciaria",
+    max_educ_level == 999 ~ NA,   # Reemplazar 999 por NA
+    TRUE ~ NA),
+    max_educ_level = as.factor(max_educ_level))
+
+### Sex
+db = db %>% 
+  mutate(sex = ifelse(sex == 0,'Femenino','Masculino'),
+         sex = factor(sex,levels = c('Femenino','Masculino')),
+         sex = relevel(sex,ref = 'Masculino'))
+
+### Relab
+db = db %>%
+  mutate(relab = case_when(
+    relab == 1 ~ "Obrero o empleado de empresa particular",
+    relab == 2 ~ "Obrero o empleado del gobierno",
+    relab == 3 ~ "Empleado doméstico",
+    relab == 4 ~ "Trabajador por cuenta propia",
+    relab == 5 ~ "Patrón o empleador",
+    relab == 6 ~ "Trabajador familiar sin remuneración",
+    relab == 7 ~ "Trabajador sin remuneración en empresas o negocios de otros hogares",
+    relab == 8 ~ "Jornalero o peón",
+    relab == 9 ~ "Otro",
+    TRUE ~ NA),
+    relab = as.factor(relab))
+
+### Formalidad
+db = db %>% 
+  mutate(formalidad = ifelse(informal == 1,'Informal','Formal'),
+         formalidad = factor(formalidad,levels = c('Informal','Formal')),
+         formalidad = relevel(formalidad,ref = 'Formal')) %>% 
+  select(-informal)
+
+### Size of firm
+db = db %>%
+  mutate(size_firm = case_when(
+    size_firm == 1 ~ "Independiente",
+    size_firm == 2 ~ "2-5 trabajadores",
+    size_firm == 3 ~ "6-10 trabajadores",
+    size_firm == 4 ~ "11-50 trabajadores",
+    size_firm == 5 ~ ">50 trabajadores"),
+    
+    size_firm = factor(size_firm,levels = c("Independiente","2-5 trabajadores",
+                                            "6-10 trabajadores","11-50 trabajadores",
+                                            ">50 trabajadores")))
+
+### Jobs 
+db = db %>%
+  mutate(oficio = case_when(
+    oficio %in% c(1,2,3,4,5,6,7,8,9,11,12) ~ "Profesionales científicos y técnicos",
+    oficio %in% c(13,14,15,16,17,19) ~ "Educación, religión y cultura",
+    oficio %in% c(18) ~ "Arte, deporte y medios",
+    oficio %in% c(20,21,30,31,32,33,34,35,36,37,38,39,40,50,51,60) ~ "Administración y gestión",
+    oficio %in% c(41,42,43,44,45,49) ~ "Comercio y ventas",
+    oficio %in% c(52,53,54,55,56,57,58,59) ~ "Servicios personales y de seguridad",
+    oficio %in% c(61,62,63,64,99) ~ "Agricultura, pesca y oficios rurales",
+    oficio %in% c(70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,93,94,95) ~ "Industria y construcción",
+    oficio %in% c(88,89,90,91,92) ~ "Textiles y manufactura artesanal",
+    oficio %in% c(96,97,98) ~ "Operarios y trabajos no calificados"),
+    oficio = factor(oficio)) 
+
+## Remove NA from outcome variable
+db = db %>% 
+  drop_na(y_total_m_ha)
+
+## Remove observations that by definition do not recieve any labor income
+db = db %>% 
+  filter(!relab %in% c("Trabajador familiar sin remuneración","Trabajador sin remuneración en empresas o negocios de otros hogares"))
+
+db = db |> 
+  mutate(relab = factor(x = relab, levels = unique(db$relab)), 
+         max_educ_level = factor(x = max_educ_level, levels = unique(db$max_educ_level)))
+
+## Select covariates
+db = db %>% 
+  select(directorio,secuencia_p,orden,
+         age,sex,max_educ_level,
+         formalidad,y_total_m, relab,size_firm,oficio,
+         total_menores,total_seniors_inactivos,
+         y_total_m_ha,
+         f_weights, mes)
+
+## Reference values (Colombia, 2018)
+## Minimum monthly wage: COP 781,242
+## Poverty line in Bogotá (household level): COP 434,630
+
+
+## ---------------------------------------------------------------
+## Exploring potential seasonality in monthly labor income
+## ---------------------------------------------------------------
+## No clear evidence of seasonality is observed across months
+db %>%
+  group_by(mes) %>%
+  summarise(
+    median_income = median(y_total_m, na.rm = TRUE),
+    mean_income   = mean(y_total_m, na.rm = TRUE),
+    max_income    = max(y_total_m, na.rm = TRUE),
+    min_income    = min(y_total_m, na.rm = TRUE)
+  )
+
+
+## ---------------------------------------------------------------
+## Distributional analysis: income quantiles
+## ---------------------------------------------------------------
+## Extreme values are observed in the upper tail of the distribution
+quantile(
+  db$y_total_m,
+  probs = c(.001, .9, .95, .99, .995, .999),
+  na.rm = TRUE
+)
+
+
+## ---------------------------------------------------------------
+## Gender composition at the extremes of the income distribution
+## ---------------------------------------------------------------
+## Excluding extreme values would remove a similar proportion
+## of men and women from the sample
+db %>%
+  filter(y_total_m >= quantile(y_total_m, .99, na.rm = TRUE)) %>%
+  group_by(sex) %>%
+  summarise(n = n())
+
+db %>%
+  filter(y_total_m <= quantile(y_total_m, .001, na.rm = TRUE)) %>%
+  group_by(sex) %>%
+  summarise(n = n())
+
+
+## ---------------------------------------------------------------
+## Construction of the trimmed analytical sample
+## ---------------------------------------------------------------
+## Sample trimmed at the 0.1th and 99th percentiles of monthly income
+db_clean <- db %>%
+  filter(
+    y_total_m <= quantile(y_total_m, .99, na.rm = TRUE),
+    y_total_m >= quantile(y_total_m, .001, na.rm = TRUE)
+  )
+
+export(db_clean, "00_data/01_main_data.rds")
+
+## ---------------------------------------------------------------
+## Descriptive checks of the final sample
+## ---------------------------------------------------------------
+hist(db_clean$y_total_m)
+summary(db_clean)
+summary(db_clean)
