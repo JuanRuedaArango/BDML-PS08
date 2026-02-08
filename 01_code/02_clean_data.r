@@ -173,7 +173,7 @@ db = db %>%
          age,sex,max_educ_level,
          formalidad,y_total_m, relab,size_firm,oficio,
          total_menores,total_seniors_inactivos,
-         y_total_m_ha,
+         y_total_m_ha,total_hours,
          f_weights, mes)
 
 ## Reference values (Colombia, 2018)
