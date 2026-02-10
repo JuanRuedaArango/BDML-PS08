@@ -245,6 +245,32 @@ c(
 ## 4. Summary regression table
 ## ===============================================================
 
+## ---------------------------------------------------------------
+## Confidence intervals
+## --------------------------------------------------------------- 
+
+# Unconditional quadratic
+ci_uncond <- boot.ci(results_boot, type = "perc")$percent[4:5]
+
+# Conditional quadratic
+ci_cond <- boot.ci(boot_peak_cond, type = "perc")$percent[4:5]
+
+# Rows with information for table
+extra_rows <- list(
+  "Implied peak age" = c(
+    "",                                   
+    round(peak_hat, 2),
+    round(peak_hat_cond, 2)
+  ),
+  "95% CI (peak age)" = c(
+    "",
+    paste0("[", round(ci_uncond[1], 2), ", ", round(ci_uncond[2], 2), "]"),
+    paste0("[", round(ci_cond[1], 2), ", ", round(ci_cond[2], 2), "]")
+  )
+)
+
+# Table
+
 etable(
   model_fe,
   model1_fe,
@@ -257,40 +283,19 @@ etable(
   ),
   
   digits = 3,
-  
   fitstat = ~ n + r2,
-  
   headers = c(
     "Linear (Unconditional)",
     "Quadratic (Unconditional)",
     "Quadratic (Conditional)"
   ),
+  extralines = extra_rows,
   
-  notes = c(
-    "Column (1) estimates a linear age–income profile.",
-    "Column (2) adds a quadratic term in age, allowing for a concave life-cycle profile.",
-    "Column (3) further conditions on labor supply (total hours worked) and employment type.",
-    "",
-    paste0(
-      "Implied peak age (quadratic, unconditional): ",
-      round(peak_hat, 2),
-      " [",
-      round(boot.ci(results_boot, type = 'perc')$percent[4], 2),
-      ", ",
-      round(boot.ci(results_boot, type = 'perc')$percent[5], 2),
-      "]"
-    ),
-    paste0(
-      "Implied peak age (quadratic, conditional): ",
-      round(peak_hat_cond, 2),
-      " [",
-      round(boot.ci(boot_peak_cond, type = 'perc')$percent[4], 2),
-      ", ",
-      round(boot.ci(boot_peak_cond, type = 'perc')$percent[5], 2),
-      "]"
-    )
-  )
+  file = "02_outputs/figures/age_income_peak.md"
 )
+
+
+
 
 ## ===============================================================
 ## 5. Visualization: age–labor income profiles
@@ -361,7 +366,7 @@ plot_df <- age_grid %>%
   ) %>%
   pivot_longer(-age, names_to = "Profile", values_to = "log_income")
 
-ggplot(plot_df, aes(x = age, y = log_income, color = Profile)) +
+p_age <- ggplot(plot_df, aes(x = age, y = log_income, color = Profile)) +
   geom_line(size = 1.2) +
   labs(
     title = "Age–labor income profiles",
@@ -370,3 +375,13 @@ ggplot(plot_df, aes(x = age, y = log_income, color = Profile)) +
     color = "Specification"
   ) +
   theme_minimal()
+
+ggsave(
+  filename = "02_outputs/figures/age_income_profiles.png",
+  plot = p_age,
+  width = 7,
+  height = 5,
+  dpi = 300
+)
+
+
