@@ -120,7 +120,7 @@ db = db %>%
     TRUE ~ NA),
     relab = as.factor(relab))
 
-### Formalidad
+### Formal
 db = db %>% 
   mutate(formalidad = ifelse(informal == 1,'Informal','Formal'),
          formalidad = factor(formalidad,levels = c('Informal','Formal')),

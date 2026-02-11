@@ -37,8 +37,8 @@ pacman::p_load(
 )
 
 db <- readRDS("00_data/01_main_data.rds")
-colnames(db)
 
+colnames(db)
 
 ## ---------------------------------------------------------------
 ## Variable construction
@@ -151,7 +151,7 @@ hist(
 ## ===============================================================
 
 model2 <- lm(
-  log_w ~ age + age2 + total_hours + factor(relab),
+  log_w ~ age + age2 + max_educ_level + sex + formalidad + total_hours + factor(relab),
   data = db
 )
 
@@ -291,7 +291,7 @@ etable(
   ),
   extralines = extra_rows,
   
-  file = "02_outputs/figures/age_income_peak.md"
+  file = "02_outputs/tables/age_income_peak.tex"
 )
 
 

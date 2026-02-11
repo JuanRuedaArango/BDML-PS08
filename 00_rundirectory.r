@@ -33,7 +33,11 @@ list = c(# 01_importar
   "01_code/01_data_scraper.R",
   
   #Cleaning data
-  "01_code/02_clean_data.R"
+  "01_code/02_clean_data.R",
+  
+  #Cleaning data
+  "01_code/03_reg_section1.R"
+  
 )
 
 run = walk(.x = list, .f = function(x){
