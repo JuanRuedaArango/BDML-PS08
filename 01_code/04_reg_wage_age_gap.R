@@ -57,8 +57,13 @@ summary(model2)
 export(model2, "02_outputs/02_model2_reg_gap_female.rds")
 
 
+<<<<<<< Updated upstream:01_code/04_reg_wage_age_gap.R
 model3 = feols(log_w ~ sex + age + age2 + max_educ_level + relab + oficio + formalidad + size_firm + total_menores + total_seniors_inactivos, data = db) 
 summary(model3)
+=======
+model3 = feols(log_w ~ sex + age + I(age2)  + max_educ_level + relab + oficio + formalidad + size_firm + total_menores + total_seniors_inactivos, data = db) 
+  summary(model3)
+>>>>>>> Stashed changes:01_code/04_reg_section2.R
 
 export(model3, "02_outputs/02_model3_reg_gap_female.rds")
 

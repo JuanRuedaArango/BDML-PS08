@@ -46,7 +46,7 @@ db <- base %>%
     sex, age, college, maxEducLevel,
     ocu, informal, relab, oficio,
     totalHoursWorked, y_total_m, y_total_m_ha,
-    p6050, pet, mes, clase, fex_c, inac, sizeFirm
+    p6050, pet, mes, clase, fex_c, inac, sizeFirm, clase, chunk
   ) %>%
   rename(
     max_educ_level = maxEducLevel,
@@ -56,7 +56,8 @@ db <- base %>%
     PET = pet,
     f_weights      = fex_c,
     inactivo       = inac,
-    size_firm      = sizeFirm
+    size_firm      = sizeFirm,
+    Urbano=clase
   )
 
 
@@ -129,6 +130,12 @@ db = db %>%
          formalidad = relevel(formalidad,ref = 'Formal')) %>% 
   select(-informal)
 
+### Urbanidad
+b <- db %>% 
+  mutate(Urbano = factor(Urbano,
+                         levels = c(1,0),
+                         labels = c("Si","No")))
+
 ### Size of firm
 db = db %>%
   mutate(size_firm = case_when(
@@ -182,7 +189,7 @@ db = db %>%
          formalidad,y_total_m, relab,size_firm,oficio,
          total_menores,total_seniors_inactivos,
          y_total_m_ha,total_hours,
-         f_weights, mes)
+         f_weights, mes,Urbano,chunk)
 
 # Reference values (Colombia, 2018). Minimum monthly wage: COP 781,242
 # Poverty line in Bogotá (household level): COP 434,630

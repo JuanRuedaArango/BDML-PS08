@@ -51,23 +51,31 @@ links <- page %>%
   paste0(url,.)
 
 #get in page and scrapping
-data = map(.x = links, .f = function(x){
-  
-  Sys.sleep(5)
-  
-  link = read_html(x) %>% 
-    as.character(page) %>% 
-    str_extract_all(pattern = "pages/geih_page.+\\.html") %>% 
-    unlist() %>% 
-    paste0(url, .)
-  
-  # import data
-  data = read_html(link) %>% 
-    html_table()
-  
-  return(data[[1]])
-  
-})
+
+data = map2(.x = links,
+            .y = seq_along(links),
+            .f = function(x, chunk_id){
+              
+              Sys.sleep(5)
+              
+              link = read_html(x) %>% 
+                as.character() %>% 
+                str_extract_all(pattern = "pages/geih_page.+\\.html") %>% 
+                unlist() %>% 
+                paste0(url, .)
+              
+             
+              data = read_html(link) %>% 
+                html_table()
+              
+              df = data[[1]]
+              
+              
+              df$chunk = chunk_id
+              
+              return(df)
+              
+            })
 
 data = rbindlist(data)
 
