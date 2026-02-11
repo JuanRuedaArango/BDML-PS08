@@ -20,7 +20,14 @@ In Bogota, wages tend to increase with age until a mid-life point and then decre
 
 \vspace{0.5cm}
 This is consistent with the **human capital theory**:  
-- Wages increase at a decreasing rate.  
 
-# **Segundo slide**
+- Wages increase at a decreasing rate.
+
+# **Data**
+Estadísticas descriptivas relevantes
+
+# **Results**
+A regression table that demonstrates the contribution of the quadratic term to model fit and the eﬀect of including controls on the estimated age–income relationship. The table should report the implied peak age (with confidence intervals) and in-sample fit for each specification presented.
+
+# **Discussion**
 ...
