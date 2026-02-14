@@ -1,0 +1,35 @@
+
+\begingroup
+\centering
+\begin{tabular}{lccc}
+   \tabularnewline \midrule \midrule
+   Dependent Variables: & log\_w & \multicolumn{2}{c}{Residuales de salario}\\
+   Model:                        & (1)            & (2)                    & (3)\\  
+   \midrule
+   \emph{Variables}\\
+   Constante                     & 14.0$^{***}$   & $1.07\times 10^{-17}$  &   \\   
+                                 & (0.009)        & (0.005)                &   \\   
+   Mujer                         & -0.227$^{***}$ &                        &   \\   
+                                 & (0.014)        &                        &   \\   
+   Residuales Mujer              &                & -0.249$^{***}$         & -0.249$^{***}$\\   
+                                 &                & (0.011)                & (0.011)\\   
+   Controles laborales           & NO             & SI                     & SI\\  
+   Controles de cuidado          & NO             & NO                     & SI\\  
+   \midrule
+   \emph{Fit statistics}\\
+   Número de observaciones       & 14,604         & 14,604                 & 14,604\\  
+   R²                            & 0.01823        & 0.03197                & 0.03190\\  
+   R² ajustado                   & 0.01816        & 0.03190                & 0.03190\\  
+   Error cuadrático medio (RMSE) & 0.83302        & 0.62229                & 0.62229\\  
+   \midrule \midrule
+   \multicolumn{4}{l}{\emph{IID standard-errors in parentheses}}\\
+   \multicolumn{4}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+\end{tabular}
+ 
+\par \raggedright 
+Controles laborales: edad, edad$^2$, nivel educativo, relación laboral, oficio y tamaño de la firma.\\
+Controles de cuidado: número de menores en el hogar y número de mayores inactivos.\\
+La columna (1) es el modelo base; (2) añade controles laborales; (3) añade controles de cuidado.
+\par\endgroup
+
+

@@ -1,16 +1,19 @@
 ---
 title: "Age-Labor Income Profile"
-author: "Sany León, Andrés Suárez, Juan Rueda"
+author: "Sany León, Andrés Suárez, and Juan Rueda"
 date: "`r Sys.Date()`"
-institute: "Universidad de Los Andes"
 output:
-  slidy_presentation: default
-  ioslides_presentation: default
   beamer_presentation: default
+  slidy_presentation: default
+institute: Universidad de Los Andes
 subtitle: Predicting Income
 theme: default
-header-includes: \useoutertheme{infolines}
 fonttheme: serif
+header-includes: 
+  - \useoutertheme{infolines}
+  - \usepackage{booktabs}
+  - \usepackage{graphicx}
+
 ---
 
 #############################################################################
@@ -33,22 +36,42 @@ Estadísticas descriptivas relevantes
 
 #############################################################################
 
-# **Results**
-A regression table that demonstrates the contribution of the quadratic term to model fit and the eﬀect of including controls on the estimated age–income relationship. The table should report the implied peak age (with confidence intervals) and in-sample fit for each specification presented.
+# Results
 
-![Age-labor profiles](age_income_profiles.png){withd=10%}
+A regression table that demonstrates the contribution of the quadratic term to model fit and the effect of including controls on the estimated age–income relationship. The table should report the implied peak age (with confidence intervals) and in-sample fit for each specification presented.
+
+\begin{center}
+\includegraphics[width=0.5\textwidth]{"../02_outputs/figures/age_income_profiles.png"}
+\end{center}
 
 
 #############################################################################
 
-
-# **Results**
+# Results
 
 ```{r results='asis', echo=FALSE}
-cat(readLines("02_outputs/tables/age_income_peak.tex"), sep = "\n")
+cat("\\begin{center}\n")
+cat("\\tiny\n")   # o \\scriptsize o \\tiny
+cat(readLines("../02_outputs/tables/02_model_age_income_peak.tex"), sep="\n")
+cat("\n\\end{center}\n")
+```
+
+#############################################################################
+
+# Results
+
+```{r results='asis', echo=FALSE}
+cat("\\begin{center}\n\\scriptsize\n")
+cat(readLines("../02_outputs/tables/03_model_gender_gap.tex"), sep="\n")
+cat("\n\\end{center}\n")
+```
 
 
 #############################################################################
 
 # **Discussion**
-...
+La tabla muestra la relación edad-salario con modelos lineales y cuadráticos, incluyendo controles laborales y tipo de empleo.  
+El modelo lineal simple no captura el patrón no lineal (\(R^2 = 0.004\)).  
+Al incluir el término cuadrático, el salario alcanza un máximo alrededor de 40 años.  
+Con controles laborales, el pico ajusta a 41 años y mejora el ajuste (\(R^2 = 0.239\)).  
+Los coeficientes de tipo de empleo indican diferencias significativas respecto a la categoría base.

@@ -33,7 +33,7 @@
 rm(list = ls())
 pacman::p_load(
   tidyverse, rvest, data.table, dplyr,
-  fixest, modelsummary, boot
+  fixest, ggplot2, modelsummary, boot
 )
 
 db <- readRDS("00_data/01_main_data.rds")
@@ -126,7 +126,7 @@ set.seed(12345)
 results_boot <- boot(
   data = db,
   statistic = peak_fn,
-  R = 10000
+  R = 3000
 )
 
 results_boot
@@ -151,7 +151,7 @@ hist(
 ## ===============================================================
 
 model2 <- lm(
-  log_w ~ age + age2 + max_educ_level + sex + formalidad + total_hours + factor(relab),
+  log_w ~ age + age2 + total_hours + factor(relab),
   data = db
 )
 
@@ -225,7 +225,7 @@ set.seed(12345)
 boot_peak_cond <- boot(
   data = db,
   statistic = peak_fn_cond,
-  R = 10000
+  R = 3000
 )
 
 boot.ci(boot_peak_cond, type = "perc")
@@ -269,7 +269,9 @@ extra_rows <- list(
   )
 )
 
-# Table
+# =============================================================================
+# Tables
+# =============================================================================
 
 etable(
   model_fe,
@@ -277,21 +279,72 @@ etable(
   model2_fe,
   
   dict = c(
-    age         = "Age",
-    age2        = "Age squared",
-    total_hours = "Total hours worked"
-  ),
+    "(Intercept)" = "Constante",
+    age           = "Age",
+    age2          = "Age square",
+    total_hours   = "Total hours worked",
+    
+    # Labels mapping for relab
+    "relabObreroempleadodeempresaparticular" = "Private firm employee",
+    "relabTrabajadorporcuentapropia"        = "Self-employed",
+    "relabEmpleadodoméstico"                 = "Domestic worker",
+    "relabPatrónoempleador"                  = "Employer",
+    "relabOtro"                              = "Other",
+    "relabJornaleroopeón"                    = "Day laborer",    
+    # Gender
+    sexFemenino   = "Female",
+    sexMasculino  = "Male",
+    
+    # Fit statistics
+    r2            = "R²",
+    ar2           = "Adjusted R²",
+    rmse          = "Root Mean Squared Error (RMSE)",
+    n             = "Number of observations",
+    "Std. Errors" = "Standard errors"  ),
   
-  digits = 3,
-  fitstat = ~ n + r2,
   headers = c(
-    "Linear (Unconditional)",
-    "Quadratic (Unconditional)",
-    "Quadratic (Conditional)"
+    "Lineal (Incondicional)",
+    "Square (Incondicional)",
+    "Square (Condicional)"
   ),
-  extralines = extra_rows,
   
-  file = "02_outputs/tables/age_income_peak.tex"
+  depvar = TRUE,
+  digits = 3,
+  title = "Perfil edad-ingreso laboral",
+  fitstat = ~ n + r2 + ar2 + rmse,
+  file = "02_outputs/tables/02_model_age_income_peak.tex",
+  replace = TRUE
+)
+
+#Additional another format table
+
+modelsummary(
+  list(
+    "Linear<br>(Unconditional)"    = model_fe,
+    "Quadratic<br>(Unconditional)" = model1_fe,
+    "Quadratic<br>(Conditional)"   = model2_fe
+    ),
+  output = "02_outputs/tables/02_model_age_income_peak.md",
+  coef_map = c(
+    "(Intercept)" = "Constante",
+    age           = "Age",
+    age2          = "Age square",
+    total_hours   = "Total hours worked",
+    
+    # Labels mapping for relab
+    "relabObreroempleadodeempresaparticular" = "Private firm employee",
+    "relabTrabajadorporcuentapropia"        = "Self-employed",
+    "relabEmpleadodoméstico"                 = "Domestic worker",
+    "relabPatrónoempleador"                  = "Employer",
+    "relabOtro"                              = "Other",
+    "relabJornaleroopeón"                    = "Day laborer",
+    
+    # Gender
+    sexFemenino   = "Female",
+    sexMasculino  = "Male"
+  ),
+  stars = c(`*` = 0.1, `**` = 0.05, `***` = 0.01),
+  fmt = 3
 )
 
 
@@ -384,4 +437,161 @@ ggsave(
   dpi = 300
 )
 
+###################################################################
+## ===============================================================
+## 5. Visualization: age–labor income profiles (WITH CI)
+## ===============================================================
 
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+age_grid <- tibble(
+  age = seq(min(db$age, na.rm = TRUE),
+            max(db$age, na.rm = TRUE),
+            by = 1)
+) %>%
+  mutate(age2 = age^2)
+
+## ---------------------------------------------------------------
+## Unconditional predictions + SE
+## ---------------------------------------------------------------
+
+pred1 <- predict(model1, newdata = age_grid, se.fit = TRUE)
+
+age_grid <- age_grid %>%
+  mutate(
+    pred_uncond = pred1$fit,
+    se_uncond   = pred1$se.fit,
+    lo_uncond   = pred_uncond - 1.96 * se_uncond,
+    hi_uncond   = pred_uncond + 1.96 * se_uncond
+  )
+
+
+## ---------------------------------------------------------------
+## Conditional predictions + SE
+## ---------------------------------------------------------------
+
+hours_mean <- mean(db$total_hours, na.rm = TRUE)
+
+age_grid_cond <- age_grid %>%
+  mutate(
+    total_hours = hours_mean,
+    relab = levels(factor(db$relab))[1]
+  )
+
+pred2 <- predict(model2, newdata = age_grid_cond, se.fit = TRUE)
+
+age_grid_cond <- age_grid_cond %>%
+  mutate(
+    pred_cond = pred2$fit,
+    se_cond   = pred2$se.fit,
+    lo_cond   = pred_cond - 1.96 * se_cond,
+    hi_cond   = pred_cond + 1.96 * se_cond
+  )
+
+
+## ---------------------------------------------------------------
+## Combine for plotting
+## ---------------------------------------------------------------
+
+plot_df <- bind_rows(
+  
+  age_grid %>%
+    transmute(
+      age,
+      Profile = "Unconditional",
+      fit = pred_uncond,
+      ci_lower = lo_uncond,
+      ci_upper = hi_uncond
+    ),
+  
+  age_grid_cond %>%
+    transmute(
+      age,
+      Profile = "Conditional",
+      fit = pred_cond,
+      ci_lower = lo_cond,
+      ci_upper = hi_cond
+    )
+)
+
+
+
+## ---------------------------------------------------------------
+## Plot with shaded CI bands + dashed borders
+## ---------------------------------------------------------------
+
+## Peak age (máximo por perfil)
+
+peak_df <- plot_df %>%
+  group_by(Profile) %>%
+  filter(fit == max(fit, na.rm = TRUE)) %>%
+  slice(1) %>%     # evita duplicados
+  ungroup()
+
+p_age <- ggplot(plot_df,
+                aes(x = age,
+                    y = fit,
+                    color = Profile,
+                    fill  = Profile)) +
+  
+  # banda CI
+  geom_ribbon(aes(ymin = ci_lower, ymax = ci_upper),
+              alpha = 0.18,
+              color = NA) +
+  
+  # límites punteados
+  geom_line(aes(y = ci_lower),
+            linetype = "dashed",
+            linewidth = 0.6,
+            show.legend = FALSE) +
+  geom_line(aes(y = ci_upper),
+            linetype = "dashed",
+            linewidth = 0.6,
+            show.legend = FALSE) +
+  
+  # línea principal
+  geom_line(linewidth = 1.0) +
+  
+  # -------- PEAK --------
+geom_vline(data = peak_df,
+           aes(xintercept = age, color = Profile),
+           linetype = "longdash",
+           linewidth = 0.3,
+           show.legend = FALSE) +
+  
+  geom_point(data = peak_df,
+             aes(x = age, y = fit),
+             size = 3,
+             show.legend = FALSE) +
+  
+  geom_text(data = peak_df,
+            aes(x = age,
+                y = fit,
+                label = paste0("", round(age,1))),
+            vjust = -1.1,
+            fontface = "italic",
+            size = 3,
+            show.legend = FALSE) +
+  
+  labs(
+    title = "Age–labor income profiles",
+    x = "Age",
+    y = "Predicted log monthly labor income",
+    color = "Specification",
+    fill  = "Specification"
+  ) +
+  
+  theme_classic()
+
+
+ggsave(
+  "02_outputs/figures/age_income_profiles.png",
+  p_age,
+  width = 7,
+  height = 5,
+  dpi = 300
+)
+
+p_age

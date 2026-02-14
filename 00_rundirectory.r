@@ -22,10 +22,33 @@
 #   - This script should be run before any estimation or inference scripts.
 # =============================================================================
 
+#packeges for markdown avalaible
+#install.packages('rmarkdown', dependencies = TRUE)
+#install.packages('knitr', dependencies = TRUE)
+
+#install.packages('tinytex', dependencies = TRUE)
+#tinytex::install_tinytex()
+
+#devtools::install_github('yihui/tinytex')
+#tinytex::reinstall_tinytex()
+
+# CRAN version
+#install.packages('tinytex')
+#remotes::install_github('rstudio/tinytex')
+
+#update.packages(ask = FALSE, checkBuilt = TRUE)
+#tinytex::tlmgr_update()
+install.packages("rlang")
+install.packages("dplyr")
+install.packages("tidyverse")
+
+#-----------------------------------------------------------
 
 # Step 1: Download and construct the raw dataset
 rm(list = ls())
 if (require("pacman") == F){install.packages("pacman")}else{require("pacman")}
+
+
 
 pacman::p_load(tidyverse)
 # run code
