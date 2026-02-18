@@ -13,11 +13,11 @@
 # Script type:    Data acquisition and preparation
 #
 # Reproducibility:
-#   - R version:      ≥ 4.2.0
-#   - Seed:           set.seed(12345)
+#   - R version:      ≥ 4.0
+#   - Seed:           set.seed(369)
 #
 # Output:
-#   - Clean datasets saved in /data/processed/
+#   - Clean datasets saved in 00_data file
 #
 # Notes:
 #   - Run this script before estimation and inference scripts.#
@@ -88,37 +88,39 @@ db <- db %>%
 ### Educacion
 db = db %>%
   mutate(max_educ_level = case_when(
-    max_educ_level == 1 ~ "Ninguno",
-    max_educ_level == 2 ~ "Preescolar",
-    max_educ_level == 3 ~ "Primaria incompleta",
-    max_educ_level == 4 ~ "Primaria completa",
-    max_educ_level == 5 ~ "Secundaria incompleta",
-    max_educ_level == 6 ~ "Secundaria completa",
-    max_educ_level == 7 ~ "Terciaria",
-    max_educ_level == 999 ~ NA,   # Reemplazar 999 por NA
-    TRUE ~ NA),
-    max_educ_level = as.factor(max_educ_level))
+    max_educ_level == 1 ~ "None",
+    max_educ_level == 2 ~ "Preschool",
+    max_educ_level == 3 ~ "Incomplete primary",
+    max_educ_level == 4 ~ "Complete primary",
+    max_educ_level == 5 ~ "Incomplete secondary",
+    max_educ_level == 6 ~ "Complete secondary",
+    max_educ_level == 7 ~ "Tertiary education",
+    max_educ_level == 999 ~ NA,   # Replace 999 with NA
+    TRUE ~ NA
+  ),
+  max_educ_level = as.factor(max_educ_level))
 
 ### Sex
 db = db %>% 
-  mutate(sex = ifelse(sex == 0,'Femenino','Masculino'),
-         sex = factor(sex,levels = c('Femenino','Masculino')),
-         sex = relevel(sex,ref = 'Masculino'))
+  mutate(sex = ifelse(sex == 0, "Female", "Male"),
+         sex = factor(sex, levels = c("Female", "Male")),
+         sex = relevel(sex, ref = "Male"))
 
 ### Relab
 db = db %>%
   mutate(relab = case_when(
-    relab == 1 ~ "Obrero o empleado de empresa particular",
-    relab == 2 ~ "Obrero o empleado del gobierno",
-    relab == 3 ~ "Empleado doméstico",
-    relab == 4 ~ "Trabajador por cuenta propia",
-    relab == 5 ~ "Patrón o empleador",
-    relab == 6 ~ "Trabajador familiar sin remuneración",
-    relab == 7 ~ "Trabajador sin remuneración en empresas o negocios de otros hogares",
-    relab == 8 ~ "Jornalero o peón",
-    relab == 9 ~ "Otro",
-    TRUE ~ NA),
-    relab = as.factor(relab))
+    relab == 1 ~ "Private sector employee",
+    relab == 2 ~ "Public sector employee",
+    relab == 3 ~ "Domestic worker",
+    relab == 4 ~ "Self-employed",
+    relab == 5 ~ "Employer",
+    relab == 6 ~ "Unpaid family worker",
+    relab == 7 ~ "Unpaid worker in other households' businesses",
+    relab == 8 ~ "Day laborer",
+    relab == 9 ~ "Other",
+    TRUE ~ NA
+  ),
+  relab = as.factor(relab))
 
 ### Formal
 db = db %>% 
@@ -130,30 +132,35 @@ db = db %>%
 ### Size of firm
 db = db %>%
   mutate(size_firm = case_when(
-    size_firm == 1 ~ "Independiente",
-    size_firm == 2 ~ "2-5 trabajadores",
-    size_firm == 3 ~ "6-10 trabajadores",
-    size_firm == 4 ~ "11-50 trabajadores",
-    size_firm == 5 ~ ">50 trabajadores"),
-    
-    size_firm = factor(size_firm,levels = c("Independiente","2-5 trabajadores",
-                                            "6-10 trabajadores","11-50 trabajadores",
-                                            ">50 trabajadores")))
+    size_firm == 1 ~ "Self-employed",
+    size_firm == 2 ~ "2–5 employees",
+    size_firm == 3 ~ "6–10 employees",
+    size_firm == 4 ~ "11–50 employees",
+    size_firm == 5 ~ "More than 50 employees"
+  ),
+  
+  size_firm = factor(size_firm,
+                     levels = c("Self-employed",
+                                "2–5 employees",
+                                "6–10 employees",
+                                "11–50 employees",
+                                "More than 50 employees")))
 
 ### Jobs 
 db = db %>%
   mutate(oficio = case_when(
-    oficio %in% c(1,2,3,4,5,6,7,8,9,11,12) ~ "Profesionales científicos y técnicos",
-    oficio %in% c(13,14,15,16,17,19) ~ "Educación, religión y cultura",
-    oficio %in% c(18) ~ "Arte, deporte y medios",
-    oficio %in% c(20,21,30,31,32,33,34,35,36,37,38,39,40,50,51,60) ~ "Administración y gestión",
-    oficio %in% c(41,42,43,44,45,49) ~ "Comercio y ventas",
-    oficio %in% c(52,53,54,55,56,57,58,59) ~ "Servicios personales y de seguridad",
-    oficio %in% c(61,62,63,64,99) ~ "Agricultura, pesca y oficios rurales",
-    oficio %in% c(70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,93,94,95) ~ "Industria y construcción",
-    oficio %in% c(88,89,90,91,92) ~ "Textiles y manufactura artesanal",
-    oficio %in% c(96,97,98) ~ "Operarios y trabajos no calificados"),
-    oficio = factor(oficio)) 
+    oficio %in% c(1,2,3,4,5,6,7,8,9,11,12) ~ "Scientific and technical professionals",
+    oficio %in% c(13,14,15,16,17,19) ~ "Education, religion, and culture",
+    oficio %in% c(18) ~ "Arts, sports, and media",
+    oficio %in% c(20,21,30,31,32,33,34,35,36,37,38,39,40,50,51,60) ~ "Administration and management",
+    oficio %in% c(41,42,43,44,45,49) ~ "Commerce and sales",
+    oficio %in% c(52,53,54,55,56,57,58,59) ~ "Personal and security services",
+    oficio %in% c(61,62,63,64,99) ~ "Agriculture, fishing, and rural occupations",
+    oficio %in% c(70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,93,94,95) ~ "Industry and construction",
+    oficio %in% c(88,89,90,91,92) ~ "Textiles and artisanal manufacturing",
+    oficio %in% c(96,97,98) ~ "Operatives and unskilled workers"
+  ),
+  oficio = factor(oficio))
 
 ## Remove NA from outcome variable
 db = db %>% 
@@ -161,7 +168,8 @@ db = db %>%
 
 ## Remove observations that by definition do not recieve any labor income
 db = db %>% 
-  filter(!relab %in% c("Trabajador familiar sin remuneración","Trabajador sin remuneración en empresas o negocios de otros hogares"))
+  filter(!relab %in% c("Unpaid family worker",
+                       "Unpaid worker in other households' businesses"))
 
 db = db |> 
   mutate(relab = factor(x = relab, levels = unique(db$relab)), 
@@ -176,9 +184,8 @@ db = db %>%
          y_total_m_ha,total_hours,
          f_weights, mes)
 
-## Reference values (Colombia, 2018)
-## Minimum monthly wage: COP 781,242
-## Poverty line in Bogotá (household level): COP 434,630
+# Reference values (Colombia, 2018). Minimum monthly wage: COP 781,242
+# Poverty line in Bogotá (household level): COP 434,630
 
 
 ## ---------------------------------------------------------------
@@ -199,11 +206,11 @@ db %>%
 ## Distributional analysis: income quantiles
 ## ---------------------------------------------------------------
 ## Extreme values are observed in the upper tail of the distribution
-quantile(
+ quantile(
   db$y_total_m,
   probs = c(.001, .9, .95, .99, .995, .999),
   na.rm = TRUE
-)
+ )
 
 
 ## ---------------------------------------------------------------
@@ -211,32 +218,34 @@ quantile(
 ## ---------------------------------------------------------------
 ## Excluding extreme values would remove a similar proportion
 ## of men and women from the sample
-db %>%
-  filter(y_total_m >= quantile(y_total_m, .99, na.rm = TRUE)) %>%
-  group_by(sex) %>%
-  summarise(n = n())
 
-db %>%
-  filter(y_total_m <= quantile(y_total_m, .001, na.rm = TRUE)) %>%
-  group_by(sex) %>%
-  summarise(n = n())
+
+# db %>%
+#  filter(y_total_m >= quantile(y_total_m, .99, na.rm = TRUE)) %>%
+#  group_by(sex) %>%
+#  summarise(n = n())
+
+# db %>%
+#  filter(y_total_m <= quantile(y_total_m, .001, na.rm = TRUE)) %>%
+#  group_by(sex) %>%
+#  summarise(n = n())
 
 
 ## ---------------------------------------------------------------
 ## Construction of the trimmed analytical sample
 ## ---------------------------------------------------------------
 ## Sample trimmed at the 0.1th and 99th percentiles of monthly income
-db_clean <- db %>%
-  filter(
-    y_total_m <= quantile(y_total_m, .99, na.rm = TRUE),
-    y_total_m >= quantile(y_total_m, .001, na.rm = TRUE)
-  )
+# db_clean <- db %>%
+#  filter(
+#    y_total_m <= quantile(y_total_m, .99, na.rm = TRUE),
+#    y_total_m >= quantile(y_total_m, .001, na.rm = TRUE) )
+ 
+#colSums(is.na(db))
 
-saveRDS(db_clean, file = "00_data/01_main_data.rds")
+  saveRDS(db, file = "00_data/01_main_data.rds")
 
 ## ---------------------------------------------------------------
 ## Descriptive checks of the final sample
 ## ---------------------------------------------------------------
-hist(db_clean$y_total_m)
-summary(db_clean)
-summary(db_clean)
+hist(db$y_total_m)
+summary(db)

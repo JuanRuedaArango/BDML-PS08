@@ -2,41 +2,37 @@
 \begingroup
 \centering
 \begin{tabular}{lccc}
-   \tabularnewline \midrule \midrule
-   Dependent Variable: & \multicolumn{3}{c}{log\_w}\\
-                                                & Lineal (Incondicional) & Square (Incondicional)  & Square (Condicional) \\   
-   Model:                                       & (1)                    & (2)                     & (3)\\  
-   \midrule
-   \emph{Variables}\\
-   Constante                                    & 14.0$^{***}$           & 12.4$^{***}$            & 12.9$^{***}$\\   
-                                                & (0.022)                & (0.060)                 & (0.065)\\   
-   Age                                          & -0.004$^{***}$         & 0.080$^{***}$           & 0.066$^{***}$\\   
-                                                & (0.0005)               & (0.003)                 & (0.003)\\   
-   Age square                                   &                        & -0.001$^{***}$          & -0.0008$^{***}$\\   
-                                                &                        & ($3.55\times 10^{-5}$)  & ($3.22\times 10^{-5}$)\\    
-   Total hours worked                           &                        &                         & 0.013$^{***}$\\   
-                                                &                        &                         & (0.0004)\\   
-   relab $=$ Obrerooempleadodeempresaparticular &                        &                         & -0.778$^{***}$\\   
-                                                &                        &                         & (0.032)\\   
-   relab $=$ Trabajadorporcuentapropia          &                        &                         & -1.22$^{***}$\\   
-                                                &                        &                         & (0.033)\\   
-   relab $=$ Empleadodoméstico                  &                        &                         & -1.43$^{***}$\\   
-                                                &                        &                         & (0.044)\\   
-   relab $=$ Patrónoempleador                   &                        &                         & -0.594$^{***}$\\   
-                                                &                        &                         & (0.046)\\   
-   relab $=$ Otro                               &                        &                         & -1.94$^{***}$\\   
-                                                &                        &                         & (0.262)\\   
-   relab $=$ Jornaleroopeón                     &                        &                         & -1.44$^{**}$\\   
-                                                &                        &                         & (0.735)\\   
-   \midrule
-   \emph{Fit statistics}\\
-   Number of observations                       & 14,604                 & 14,604                  & 14,604\\  
-   R²                                           & 0.00438                & 0.05630                 & 0.23889\\  
-   Adjusted R²                                  & 0.00431                & 0.05617                 & 0.23842\\  
-   Root Mean Squared Error (RMSE)               & 0.83888                & 0.81671                 & 0.73346\\  
-   \midrule \midrule
-   \multicolumn{4}{l}{\emph{IID standard-errors in parentheses}}\\
-   \multicolumn{4}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+   \tabularnewline\midrule\midrule
+    & \multicolumn{3}{c}{Log Monthly Labor Income}\\
+                              & Linear         & Quadratic (Unconditional) & Quadratic (Conditional) \\   
+                              & (1)            & (2)                       & (3)\\  
+   \midrule 
+   Constant                   & 14.0$^{***}$   & 12.4$^{***}$              & 12.8$^{***}$\\   
+                              & (0.023)        & (0.064)                   & (0.070)\\   
+   Age                        & -0.003$^{***}$ & 0.084$^{***}$             & 0.070$^{***}$\\   
+                              & (0.0006)       & (0.003)                   & (0.003)\\   
+   Age squared                &                & -0.001$^{***}$            & -0.0008$^{***}$\\   
+                              &                & ($3.76\times 10^{-5}$)    & ($3.43\times 10^{-5}$)\\    
+   Total hours worked         &                &                           & 0.013$^{***}$\\   
+                              &                &                           & (0.0004)\\   
+    $=$ Privatesectoremployee &                &                           & -0.756$^{***}$\\   
+                              &                &                           & (0.034)\\   
+    $=$ Self-employed         &                &                           & -1.24$^{***}$\\   
+                              &                &                           & (0.035)\\   
+    $=$ Domesticworker        &                &                           & -1.45$^{***}$\\   
+                              &                &                           & (0.047)\\   
+    $=$ Employer              &                &                           & -0.529$^{***}$\\   
+                              &                &                           & (0.049)\\   
+    $=$ Other                 &                &                           & -1.94$^{***}$\\   
+                              &                &                           & (0.281)\\   
+    $=$ Daylaborer            &                &                           & -1.41$^{*}$\\   
+                              &                &                           & (0.790)\\   
+    \\
+   Number of observations     & 14,764         & 14,764                    & 14,764\\  
+   R²                         & 0.00187        & 0.05000                   & 0.22643\\  
+   Adjusted R²                & 0.00180        & 0.04987                   & 0.22596\\  
+   Root Mean Squared Error    & 0.89556        & 0.87370                   & 0.78841\\  
+   \midrule \midrule & \tabularnewline
 \end{tabular}
 \par\endgroup
 

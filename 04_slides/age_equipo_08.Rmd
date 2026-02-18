@@ -40,9 +40,12 @@ Estadísticas descriptivas relevantes
 
 A regression table that demonstrates the contribution of the quadratic term to model fit and the effect of including controls on the estimated age–income relationship. The table should report the implied peak age (with confidence intervals) and in-sample fit for each specification presented.
 
-\begin{center}
-\includegraphics[width=0.5\textwidth]{"../02_outputs/figures/age_income_profiles.png"}
-\end{center}
+\begin{figure}[h!]
+\centering
+\caption{Age-labor Income profiles}
+\includegraphics[width=0.6 \textwidth]{"../02_outputs/figures/age_income_profiles.png"}
+\label{fig:age_income}
+\end{figure}
 
 
 #############################################################################
@@ -56,16 +59,6 @@ cat(readLines("../02_outputs/tables/02_model_age_income_peak.tex"), sep="\n")
 cat("\n\\end{center}\n")
 ```
 
-#############################################################################
-
-# Results
-
-```{r results='asis', echo=FALSE}
-cat("\\begin{center}\n\\scriptsize\n")
-cat(readLines("../02_outputs/tables/03_model_gender_gap.tex"), sep="\n")
-cat("\n\\end{center}\n")
-```
-
 
 #############################################################################
 
@@ -75,3 +68,36 @@ El modelo lineal simple no captura el patrón no lineal (\(R^2 = 0.004\)).
 Al incluir el término cuadrático, el salario alcanza un máximo alrededor de 40 años.  
 Con controles laborales, el pico ajusta a 41 años y mejora el ajuste (\(R^2 = 0.239\)).  
 Los coeficientes de tipo de empleo indican diferencias significativas respecto a la categoría base.
+
+- **Forma general del perfil edad-ingreso:**  
+  - En el modelo lineal (Columna 1), el coeficiente de edad es negativo, pero esto ignora la no linealidad esperada; no captura un pico.  
+  - En los modelos cuadráticos (Columnas 2 y 3), el coeficiente de edad positivo y el coeficiente negativo de edad² generan un **perfil concavo**, consistente con la teoría del capital humano.  
+  - Esto evidencia un **pico en ingresos dentro del rango de edad observado**, lo que coincide con la predicción de la teoría.
+
+- **Edad pico y efecto de controles:**  
+  - Modelo cuadrático no condicionado (Columna 2): edad pico implícita ~39.9 años [39.37, 40.43].  
+  - Modelo cuadrático condicionado por horas trabajadas y tipo de empleo (Columna 3): edad pico aumenta a ~42.6 años [41.93, 43.31].  
+  - La inclusión de controles **desplaza el pico hacia edades mayores** y reduce la influencia de factores observables sobre la concavidad, mostrando que **parte de la dinámica edad-ingreso se explica por horas y tipo de empleo**.
+
+
+#############################################################################
+
+# **Discussion**
+
+- **Interpretación económica de la no linealidad:**  
+  - La forma concava refleja acumulación de experiencia y capital humano: ingresos crecen hasta cierto punto de la carrera y luego se estabilizan o disminuyen.  
+  - El aumento de la edad pico tras controlar por horas y empleo sugiere que algunos grupos (por ejemplo, trabajadores por cuenta propia o domésticos) tienen trayectorias más largas y menos intensivas, afectando el perfil promedio.
+
+- **Diferencias entre especificaciones:**  
+  - Modelo lineal subestima la ganancia de ingresos en edades medias y no refleja el declive posterior.  
+  - Modelos cuadráticos capturan correctamente la concavidad; la versión condicionada muestra que parte de la curva no lineal proviene de diferencias en intensidad laboral y tipo de empleo.  
+
+- **Posibles características del mercado laboral de Bogotá que afectan el perfil:**  
+  - Alta heterogeneidad en tipos de empleo y jornadas (empleo formal vs. informal, doméstico, jornalero) puede alargar o acortar el ciclo de ingresos.  
+  - Interrupciones en la carrera (cuidado de hijos o adultos mayores) pueden afectar el pico y la concavidad promedio.  
+  - Diferencias sectoriales y empleos con menor movilidad salarial podrían explicar que el pico condicional sea más tardío que el no condicionado.
+
+- **Conclusión general:**  
+  - Los datos respaldan la predicción de la teoría del capital humano: **perfil edad-ingreso concavo con un pico observable**.  
+  - La observación del pico más tardío al controlar horas y tipo de empleo revela que la **estructura laboral y la intensidad de trabajo son determinantes del patrón de ingresos a lo largo de la vida**.
+

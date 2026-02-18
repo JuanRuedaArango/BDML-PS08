@@ -10,21 +10,18 @@
 # Created:        2026-02-07
 # Last updated:   2026-02-08
 #
-# Data source:    Ignacio's repository (see README for access details)
-# Script type:    Estimation and inference
-#
 # Reproducibility:
-#   - R version:      ≥ 4.2.0
-#   - Seed:           set.seed(12345)
+#   - R version:      ≥ 4.0
+#   - Seed:           set.seed(369)
 #
 # Output:
-#   - Unconditional age–income regression
-#   - Peak age estimate
-#   - Bootstrap confidence interval for peak age
+#   - Unconditional and conditional age–income regression
+#   - Bootstrap confidence interval for peak age and wage profile
 #
 # Notes:
 #   - This script must be run after the data cleaning step
 # =============================================================================
+
 
 ## ---------------------------------------------------------------
 ## Load previously downloaded data
@@ -121,7 +118,7 @@ peak_fn(db, 1:nrow(db))
 # Bootstrap implementation
 # -----------------------------------------------------------------------------
 
-set.seed(12345)
+set.seed(1369)
 
 results_boot <- boot(
   data = db,
@@ -220,7 +217,7 @@ peak_fn_cond <- function(data, index) {
   return(peak)
 }
 
-set.seed(12345)
+set.seed(1369)
 
 boot_peak_cond <- boot(
   data = db,
@@ -245,9 +242,7 @@ c(
 ## 4. Summary regression table
 ## ===============================================================
 
-## ---------------------------------------------------------------
-## Confidence intervals
-## --------------------------------------------------------------- 
+## 4.1 Confidence intervals
 
 # Unconditional quadratic
 ci_uncond <- boot.ci(results_boot, type = "perc")$percent[4:5]
@@ -279,39 +274,29 @@ etable(
   model2_fe,
   
   dict = c(
-    "(Intercept)" = "Constante",
+    "log_w"        = "Log Monthly Labor Income",
+    "(Intercept)" = "Constant",
     age           = "Age",
-    age2          = "Age square",
+    age2          = "Age squared",
     total_hours   = "Total hours worked",
-    
-    # Labels mapping for relab
-    "relabObreroempleadodeempresaparticular" = "Private firm employee",
-    "relabTrabajadorporcuentapropia"        = "Self-employed",
-    "relabEmpleadodoméstico"                 = "Domestic worker",
-    "relabPatrónoempleador"                  = "Employer",
-    "relabOtro"                              = "Other",
-    "relabJornaleroopeón"                    = "Day laborer",    
-    # Gender
-    sexFemenino   = "Female",
-    sexMasculino  = "Male",
-    
-    # Fit statistics
+    "relab "    ="",      # 🔹 elimina el prefijo relab
+    sexFemale     = "Female",
     r2            = "R²",
     ar2           = "Adjusted R²",
-    rmse          = "Root Mean Squared Error (RMSE)",
-    n             = "Number of observations",
-    "Std. Errors" = "Standard errors"  ),
+    rmse          = "Root Mean Squared Error",
+    n             = "Number of observations"
+  ),
   
   headers = c(
-    "Lineal (Incondicional)",
-    "Square (Incondicional)",
-    "Square (Condicional)"
+    "Linear",
+    "Quadratic (Unconditional)",
+    "Quadratic (Conditional)"
   ),
   
   depvar = TRUE,
   digits = 3,
-  title = "Perfil edad-ingreso laboral",
   fitstat = ~ n + r2 + ar2 + rmse,
+  style.tex = style.tex("qje"),
   file = "02_outputs/tables/02_model_age_income_peak.tex",
   replace = TRUE
 )
@@ -348,103 +333,9 @@ modelsummary(
 )
 
 
-
-
-## ===============================================================
-## 5. Visualization: age–labor income profiles
-## ===============================================================
-
-age_grid <- tibble(
-  age  = seq(min(db$age, na.rm = TRUE),
-             max(db$age, na.rm = TRUE),
-             by = 1)
-) %>%
-  mutate(age2 = age^2)
-
-## ---------------------------------------------------------------
-## Prediction values (unconditional)
-## ---------------------------------------------------------------
-
-age_grid$pred_uncond <- predict(
-  model1,
-  newdata = age_grid
-)
-
-ggplot(age_grid, aes(x = age, y = pred_uncond)) +
-  geom_line(size = 1.2, color = "steelblue") +
-  labs(
-    title = "Unconditional age–labor income profile",
-    x = "Age",
-    y = "Predicted log monthly labor income"
-  ) +
-  theme_minimal()
-
-## ---------------------------------------------------------------
-## Prediction values (conditional)
-## ---------------------------------------------------------------
-
-# Reference values for controls
-hours_mean <- mean(db$total_hours, na.rm = TRUE)
-
-age_grid_cond <- age_grid %>%
-  mutate(
-    total_hours = hours_mean,
-    relab = levels(factor(db$relab))[1]
-  )
-
-# Predicted values (conditional)
-age_grid_cond$pred_cond <- predict(
-  model2,
-  newdata = age_grid_cond
-)
-
-ggplot(age_grid_cond, aes(x = age, y = pred_cond)) +
-  geom_line(size = 1.2, color = "darkred") +
-  labs(
-    title = "Conditional age–labor income profile",
-    x = "Age",
-    y = "Predicted log monthly labor income"
-  ) +
-  theme_minimal()
-
-## ---------------------------------------------------------------
-## Comparison: unconditional vs conditional
-## ---------------------------------------------------------------
-
-plot_df <- age_grid %>%
-  select(age) %>%
-  mutate(
-    Unconditional = age_grid$pred_uncond,
-    Conditional   = age_grid_cond$pred_cond
-  ) %>%
-  pivot_longer(-age, names_to = "Profile", values_to = "log_income")
-
-p_age <- ggplot(plot_df, aes(x = age, y = log_income, color = Profile)) +
-  geom_line(size = 1.2) +
-  labs(
-    title = "Age–labor income profiles",
-    x = "Age",
-    y = "Predicted log monthly labor income",
-    color = "Specification"
-  ) +
-  theme_minimal()
-
-ggsave(
-  filename = "02_outputs/figures/age_income_profiles.png",
-  plot = p_age,
-  width = 7,
-  height = 5,
-  dpi = 300
-)
-
-###################################################################
 ## ===============================================================
 ## 5. Visualization: age–labor income profiles (WITH CI)
 ## ===============================================================
-
-library(dplyr)
-library(tidyr)
-library(ggplot2)
 
 age_grid <- tibble(
   age = seq(min(db$age, na.rm = TRUE),
@@ -527,7 +418,7 @@ plot_df <- bind_rows(
 peak_df <- plot_df %>%
   group_by(Profile) %>%
   filter(fit == max(fit, na.rm = TRUE)) %>%
-  slice(1) %>%     # evita duplicados
+  slice(1) %>%  
   ungroup()
 
 p_age <- ggplot(plot_df,
@@ -572,26 +463,25 @@ geom_vline(data = peak_df,
                 label = paste0("", round(age,1))),
             vjust = -1.1,
             fontface = "italic",
-            size = 3,
+            size = 4,
             show.legend = FALSE) +
   
+  # Colores rosa y celeste
+  scale_color_manual(values = c("Unconditional" = "hotpink", "Conditional" = "blue"
+  )) +
+  scale_fill_manual(values = c("Unconditional" = "hotpink", "Conditional" = "blue"
+  )) +
+  
   labs(
-    title = "Age–labor income profiles",
+    title = "",
     x = "Age",
     y = "Predicted log monthly labor income",
     color = "Specification",
     fill  = "Specification"
   ) +
   
-  theme_classic()
+  theme_classic()  
 
+ggsave("02_outputs/figures/age_income_profiles.png", 
+       p_age, width = 7, height = 5, dpi = 300)
 
-ggsave(
-  "02_outputs/figures/age_income_profiles.png",
-  p_age,
-  width = 7,
-  height = 5,
-  dpi = 300
-)
-
-p_age
