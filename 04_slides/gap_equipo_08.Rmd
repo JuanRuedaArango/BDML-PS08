@@ -5,10 +5,11 @@ date: "`r Sys.Date()`"
 output:
   beamer_presentation: default
   slidy_presentation: default
-institute: Universidad de Los Andes
+#institute: Universidad de Los Andes
 subtitle: Predicting Income
 theme: default
 fonttheme: serif
+fontsize: 10pt
 header-includes: 
   - \useoutertheme{infolines}
   - \usepackage{booktabs}
@@ -37,8 +38,6 @@ This is consistent with the **human capital theory**:
 
 # Results
 
-A regression table that demonstrates the contribution of the quadratic term to model fit and the effect of including controls on the estimated age–income relationship. The table should report the implied peak age (with confidence intervals) and in-sample fit for each specification presented.
-
 \begin{figure}[h!]
 \centering
 \caption{Income Profile by Sex and Age}
@@ -62,61 +61,18 @@ cat("\n\\end{center}\n")
 
 # **Discussion**
 
-- **Evolución de la brecha salarial de género:**  
-  - En el modelo base, las mujeres ganan aproximadamente un 24% menos que los hombres en promedio.  
-  - Al controlar por características laborales (edad, educación, ocupación, tipo de empleo y tamaño de la empresa), parte de la brecha se explica, pero persiste un efecto residual negativo.  
-  - Al añadir controles relacionados con cuidado familiar (número de menores y adultos mayores dependientes), la brecha residual sigue siendo significativa, indicando que existen factores no observables que afectan los salarios femeninos.  
+- **Evolution of the Gender Wage Gap and Sources of Differences**  
+  The raw gender wage gap shows that women earn substantially less than men on average (around 24%). Adding labor market controls (age, education, occupation, employment type, firm size) reduces the gap, indicating that part of the difference is explained by observable characteristics and occupational selection. However, a statistically significant residual gap persists even after including caregiving controls, suggesting a combination of selection effects and potential discrimination or unobserved factors.
 
-- **Interpretación según el enfoque FWL:**  
-  - Las regresiones de residuales permiten aislar el efecto de género **eliminando la influencia de variables de control**, mostrando cuánto de la brecha queda “no explicada” por diferencias observables.  
-  - La reducción parcial con controles laborales sugiere **selección en la ocupación y características laborales**, mientras que la persistencia de la brecha residual indica **discriminación u otros factores no observables**.  
-
-- **Principio de "igual salario por trabajo igual":**  
-  - No se cumple completamente: incluso después de ajustar por características observables y de cuidado, las mujeres siguen ganando menos que los hombres.  
-
-- **Consideraciones de inferencia:**  
-  - Se compararon errores estándar analíticos y bootstrap; discrepancias pueden surgir por heterocedasticidad o dependencia en los datos.  
-  - En este contexto, los errores bootstrap ofrecen una estimación más robusta del intervalo de confianza de la brecha residual de género.  
-
-- **Síntesis:**  
-  - La brecha salarial de género se explica parcialmente por diferencias observables, pero persiste un componente no explicado, consistente con discriminación directa o factores no medidos.
-
+- **Equal Pay for Equal Work**  
+  The principle of “equal pay for equal work” does not fully hold. Even after accounting for observable productivity-related characteristics and family responsibilities, women continue to earn less than comparable men. This indicates that systematic observable differences explain only part of the earnings gap.
 
 #############################################################################
 
 # **Discussion**
 
-- **Principio de "igual salario por trabajo igual":**  
-  - No se cumple completamente, dado que incluso después de controlar por diferencias observables, las mujeres continúan ganando menos que los hombres.
+- **Inference: Analytical vs. Bootstrap Standard Errors**  
+  Differences between analytical and bootstrap standard errors may arise from heteroskedasticity or non-normal residual distributions. While analytical standard errors are reasonable in large samples, bootstrap estimates provide more robust confidence intervals and are preferable when distributional assumptions may be violated.
 
-- **Consideraciones sobre errores estándar:**  
-  - Diferencias entre errores estándar analíticos y bootstrap podrían surgir por heterocedasticidad o distribución no normal de los residuos.  
-  - En este contexto de muestra grande, los errores estándar analíticos son razonables, aunque los bootstrap serían más robustos frente a heterogeneidad o dependencia entre observaciones.
-
-- **Síntesis:**  
-  - La brecha de género se explica parcialmente por características observables, pero persiste un componente no explicado, compatible con discriminación directa o factores no medidos.
-
-
-#############################################################################
-
-# **Discussion**
-
-
-- **Errores estándar analíticos vs. bootstrap:**  
-  - Las diferencias pueden deberse a heterocedasticidad o distribución no normal de los residuos.  
-  - Los errores bootstrap son más robustos frente a estas condiciones, y proporcionan intervalos de confianza más fiables.  
-
-- **Elección de controles:**  
-  - Controles laborales: edad, edad², educación, relación laboral, ocupación y tamaño de la empresa.  
-  - Controles de cuidado: número de menores y adultos mayores dependientes.  
-  - Se eligieron para capturar diferencias observables relevantes, evitando “bad controls” que podrían sesgar la estimación de la brecha de género.  
-
-- **Diferencias en perfiles edad-ingreso:**  
-  - Los hombres y mujeres presentan diferentes perfiles de ingresos a lo largo de la vida laboral:  
-    - Crecimiento más pronunciado para hombres en ciertos rangos de edad.  
-    - Edad pico de ingresos ligeramente más alta o más baja según el género, reflejando trayectorias de carrera distintas.  
-  - Estas diferencias sugieren mecanismos económicos como interrupciones por cuidado familiar, diferencias en experiencia laboral acumulada o discriminación salarial.  
-
-- **Conclusión general sobre la brecha y el papel del género:**  
-  - Parte de la brecha se explica por diferencias sistemáticas observables, pero persiste un componente no explicado compatible con discriminación o factores no medidos.  
-  - El género sigue desempeñando un papel importante en la explicación de la variación de los ingresos laborales en el mercado de Bogotá, incluso después de controlar por características observables y responsabilidades de cuidado.
+- **Heterogeneity in Age–Income Profiles and Economic Mechanisms**  
+  Men and women exhibit different life-cycle earnings profiles, including differences in earnings growth and peak ages. These patterns may reflect career interruptions, differences in accumulated experience, occupational sorting, or discrimination. Statistically meaningful differences in peak ages suggest distinct career trajectories by gender, reinforcing the role of structural and institutional factors in shaping wage dynamics in Bogotá’s labor market.
