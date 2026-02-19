@@ -1,5 +1,5 @@
 ---
-title: "Age-Labor Income Profile"
+title: "Gender{Labor Income Gap"
 author: "Sany León, Andrés Suárez, and Juan Rueda"
 date: "`r Sys.Date()`"
 output:
