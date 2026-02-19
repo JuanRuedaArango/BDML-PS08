@@ -16,7 +16,6 @@ header-includes:
   - \usepackage{graphicx}
 ---
 
-#############################################################################
 # **Research Question**
 
 ## ¿How does wage vary with age in Bogota?
@@ -63,11 +62,21 @@ cat("\n\\end{center}\n")
 
 # **Discussion**
 
+\vspace{0.5cm}
 ### 1. Evidence of a Non-Linear and Concave Age–Income Profile
 
-The quadratic specifications show a positive coefficient on age and a negative coefficient on age², generating a **concave age–earnings profile**, consistent with human capital theory. There is clear evidence of an **earnings peak within the observed age range**, around 40 years.  
+\vspace{0.5cm}
+The quadratic specifications show a positive coefficient on age and a negative coefficient on age², generating a **concave age–earnings profile**. There is clear evidence of an **earnings peak within the observed age range**, around 40 years.
 
+\vspace{0.5cm}
 In contrast, the linear model fails to capture this non-linearity and exhibits very low explanatory power.
+
+\vspace{0.5cm}
+- Results are consistent with the theory: "Earnings rise at a diminishing rate over the working life, and decline when net investment becomes negative, as in old age. The typical (logarithmic) working-life earnings profile is, therefore, concave" (Mincer, 1974)
+
+#############################################################################
+
+# **Discussion**
 
 ### 2. Effect of Conditioning on Hours Worked and Employment Type
 
@@ -75,13 +84,14 @@ Including controls for hours worked and employment type shifts the estimated **e
 
 This suggests that part of the observed non-linearity is driven by differences in labor intensity and occupational structure, rather than solely by human capital accumulation.
 
-#############################################################################
-
-# **Discussion**
-
 ### 3. Economic Interpretation in the Context of Bogotá’s Labor Market
 
 The results support the theoretical prediction of a concave life-cycle earnings profile. However, the shape of the profile is influenced by labor market characteristics such as occupational heterogeneity and variation in working hours.  
 
 Overall, the observed age–income pattern reflects both experience accumulation and structural labor market factors.
 
+#############################################################################
+
+# **References**
+
+Mincer, J. A. (1974). Schooling, Experience, and Earnings. National Bureau of Economic Research.
