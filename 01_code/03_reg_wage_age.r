@@ -275,16 +275,16 @@ etable(
   
   dict = c(
     "log_w"        = "Log Monthly Labor Income",
-    "(Intercept)" = "Constant",
-    age           = "Age",
-    age2          = "Age squared",
-    total_hours   = "Total hours worked",
-    "relab "    ="",      # 🔹 elimina el prefijo relab
-    sexFemale     = "Female",
-    r2            = "R²",
-    ar2           = "Adjusted R²",
-    rmse          = "Root Mean Squared Error",
-    n             = "Number of observations"
+    "(Intercept)"  = "Constant",
+    age            = "Age",
+    age2           = "Age squared",
+    total_hours    = "Total hours worked",
+    "relab "       = "",
+    sexFemale      = "Female",
+    r2             = "R²",
+    ar2            = "Adjusted R²",
+    rmse           = "Root Mean Squared Error",
+    n              = "Number of observations"
   ),
   
   headers = c(
@@ -295,11 +295,14 @@ etable(
   
   depvar = TRUE,
   digits = 3,
-  fitstat = ~ n + r2 + ar2 + rmse,
+  fitstat = ~ n + r2 + ar2 + ci + rmse,
+  coefstat = "ci",     
+  ci = 0.95,           # nivel
   style.tex = style.tex("qje"),
   file = "02_outputs/tables/02_model_age_income_peak.tex",
   replace = TRUE
 )
+
 
 #Additional another format table
 

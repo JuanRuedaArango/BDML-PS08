@@ -15,12 +15,9 @@
 #
 # Reproducibility:
 #   - R version:      ≥ 4.2.0
-#   - Seed:           set.seed(12345)
 #
 # Output:
 #   - Unconditional age–income regression
-#   - Peak age estimate
-#   - Bootstrap confidence interval for peak age
 #
 # Notes:
 #   - This script must be run after the data cleaning step

@@ -17,10 +17,10 @@ header-includes:
 #############################################################################
 # **Research Question**
 
-## ¿How does wage vary with age in Bogota?
 
 \vspace{0.5cm}
-In Bogota, wages tend to increase with age until a mid-life point and then decrease.  
+
+Can prediction-based income models reliably identify individuals with anomalous earnings patterns, and do large prediction errors reflect misreporting or structural model limitations?
 
 #############################################################################
 

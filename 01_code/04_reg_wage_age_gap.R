@@ -154,6 +154,8 @@ etable(model1, model4, model5,
        depvar = TRUE,
        digits = 3,
        fitstat = ~ n + r2 + ar2 + rmse,
+       ci = 0.95,              
+       se = NULL, 
        style.tex = style.tex("qje"),
        title = "Estimation Results", 
        notes.size = c(

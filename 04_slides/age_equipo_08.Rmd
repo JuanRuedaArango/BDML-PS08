@@ -1,12 +1,12 @@
 ---
-title: "Age-Labor Income Profile"
+title: "**Age-Labor Income Profile**"
 author: "Sany León, Andrés Suárez, and Juan Rueda"
 date: "`r Sys.Date()`"
 output:
-  beamer_presentation: default
+  beamer_presentation: 
   slidy_presentation: default
-#institute: Universidad de Los Andes
-subtitle: Predicting Income
+#institute: 
+subtitle: Universidad de Los Andes
 theme: default
 fonttheme: serif
 fontsize: 10pt
@@ -14,19 +14,18 @@ header-includes:
   - \useoutertheme{infolines}
   - \usepackage{booktabs}
   - \usepackage{graphicx}
+  - \usepackage{threeparttable}
+
 ---
 
 # **Research Question**
 
-## ¿How does wage vary with age in Bogota?
+
+To what extent do labor income models capture the structural determinants of income, and how does the balance between their interpretability and predictive accuracy affect their usefulness for policymaking?
 
 \vspace{0.5cm}
-In Bogota, wages tend to increase with age until a mid-life point and then decrease.  
+Is there empirical evidence of a non-linear (concave) relationship between age and labor income in Bogotá, and how does this relationship change when controlling for hours worked and type of employment?
 
-\vspace{0.5cm}
-This is consistent with the **human capital theory**:  
-
-- Wages increase at a decreasing rate.
 
 #############################################################################
 
@@ -34,21 +33,33 @@ This is consistent with the **human capital theory**:
 Estadísticas descriptivas relevantes
 
 
-#############################################################################
-
-# Results
-
 \begin{figure}[h!]
 \centering
-\caption{Age-labor Income profiles}
+\caption{Descriptive Statistic Continuos variables}
 \includegraphics[width=0.6 \textwidth]{"../02_outputs/figures/age_income_profiles.png"}
 \label{fig:age_income}
 \end{figure}
 
+#############################################################################
+
+# **Data**
+
 
 #############################################################################
 
-# Results
+# **Data**
+
+```{r results='asis', echo=FALSE}
+cat("\\begin{center}\n")
+cat("\\tiny\n")   # o \\scriptsize o \\tiny
+cat(readLines("../02_outputs/tables/01_tabla_categoricas.tex"), sep="\n")
+cat("\n\\end{center}\n")
+```
+
+
+#############################################################################
+
+#**Results**
 
 ```{r results='asis', echo=FALSE}
 cat("\\begin{center}\n")
