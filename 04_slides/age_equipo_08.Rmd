@@ -15,7 +15,8 @@ header-includes:
   - \usepackage{booktabs}
   - \usepackage{graphicx}
   - \usepackage{threeparttable}
-
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
 ---
 
 # **Research Question**
@@ -26,12 +27,28 @@ To what extent do labor income models capture the structural determinants of inc
 \vspace{0.5cm}
 Is there empirical evidence of a non-linear (concave) relationship between age and labor income in Bogotá, and how does this relationship change when controlling for hours worked and type of employment?
 
-
 #############################################################################
 
 # **Data**
-Estadísticas descriptivas relevantes
+```{r results='asis', echo=FALSE}
+cat("\\scriptsize\n")
+cat(readLines("../02_outputs/tables/01_tabla_continuas.tex"), sep="\n")
+```
 
+
+
+#############################################################################
+
+## **Data**
+```{r results='asis', echo=FALSE}
+cat("\\scriptsize\n")
+cat(readLines("../02_outputs/tables/01_tabla_categoricas.tex"), sep="\n")
+```
+
+
+#############################################################################
+
+# **Results**
 
 \begin{figure}[h!]
 \centering
@@ -42,24 +59,8 @@ Estadísticas descriptivas relevantes
 
 #############################################################################
 
-# **Data**
+# **Results**
 
-
-#############################################################################
-
-# **Data**
-
-```{r results='asis', echo=FALSE}
-cat("\\begin{center}\n")
-cat("\\tiny\n")   # o \\scriptsize o \\tiny
-cat(readLines("../02_outputs/tables/01_tabla_categoricas.tex"), sep="\n")
-cat("\n\\end{center}\n")
-```
-
-
-#############################################################################
-
-#**Results**
 
 ```{r results='asis', echo=FALSE}
 cat("\\begin{center}\n")
