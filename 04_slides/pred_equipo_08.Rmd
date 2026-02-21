@@ -22,10 +22,6 @@ header-includes:
 
 Can prediction-based income models reliably identify individuals with anomalous earnings patterns, and do large prediction errors reflect misreporting or structural model limitations?
 
-#############################################################################
-
-# **Data**
-
 
 #############################################################################
 
@@ -139,6 +135,10 @@ Model 9 achieves the lowest validation RMSE (0.648). Notably, its LOOCV RMSE (0.
 #############################################################################
 
 # **Discussion**
+
+- **Model performance:** Model 9 achieves the lowest validation RMSE (0.648), showing that including higher-order interactions improves predictive accuracy.  
+- **LOOCV vs. test error:** LOOCV RMSE values are substantially lower than validation RMSE (e.g., 0.377 vs. 0.648 for Model 9), indicating that LOOCV may underestimate true out-of-sample prediction error.  
+- **Outlier robustness:** Removing outliers does not affect RMSE, suggesting the models are robust to extreme observations and that large prediction errors likely reflect structural model limitations rather than anomalous data.
 
 
 #############################################################################
