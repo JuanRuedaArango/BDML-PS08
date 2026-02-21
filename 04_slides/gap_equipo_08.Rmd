@@ -57,8 +57,11 @@ cat("\n\\end{center}\n")
 # **Discussion**
 
 ### 1. Evolution of the Gender Wage Gap and Sources of Differences
-  The raw gender wage gap shows that women earn substantially less than men on average (around 24%). Adding labor market controls (age, education, occupation, employment type, firm size) reduces the gap, indicating that part of the difference is explained by observable characteristics and occupational selection. However, a statistically significant residual gap persists even after including caregiving controls, suggesting a combination of selection effects and potential discrimination or unobserved factors.
 
+\vspace{0.5cm}
+The raw gender wage gap shows that women earn substantially less than men on average (around 24%). Adding labor market controls (age, education, occupation, employment type, firm size) reduces the gap, indicating that part of the difference is explained by observable characteristics and occupational selection. However, a statistically significant residual gap persists even after including caregiving controls, suggesting a combination of selection effects and potential discrimination or unobserved factors.
+
+\vspace{0.5cm}
 - “Most of the gender wage gap studies have produced estimates of an ‘explained’ and a ‘residual’ portion” (Goldin, 2014).
 
 #############################################################################
@@ -66,19 +69,30 @@ cat("\n\\end{center}\n")
 # **Discussion**
 
 ### 2. Equal Pay for Equal Work
-  The principle of “equal pay for equal work” does not fully hold. Even after accounting for observable productivity-related characteristics and family responsibilities, women continue to earn less than comparable men. This indicates that systematic observable differences explain only part of the earnings gap.
 
+\vspace{0.5cm}
+The principle of “equal pay for equal work” does not fully hold. Even after accounting for observable productivity-related characteristics and family responsibilities, women continue to earn less than comparable men. This indicates that systematic observable differences explain only part of the earnings gap.
+
+\vspace{0.5cm}
 - “The ‘residual’ is often termed ‘wage discrimination’ since it is the difference in earnings between observationally identical males and females” (Goldin, 2014).
 
+#############################################################################
+
+# **Discussion**
+
 ### 3. Inference: Analytical vs. Bootstrap Standard Errors
-  Differences between analytical and bootstrap standard errors may arise from heteroskedasticity or non-normal residual distributions. While analytical standard errors are reasonable in large samples, bootstrap estimates provide more robust confidence intervals and are preferable when distributional assumptions may be violated.
+
+\vspace{0.5cm}
+Differences between analytical and bootstrap standard errors may arise from heteroskedasticity or non-normal residual distributions. While analytical standard errors are reasonable in large samples, bootstrap estimates provide more robust confidence intervals and are preferable when distributional assumptions may be violated.
 
 #############################################################################
 
 # **Discussion**
 
 ### 4. Heterogeneity in Age–Income Profiles and Economic Mechanisms
-  Men and women exhibit different life-cycle earnings profiles, including differences in earnings growth and peak ages. These patterns may reflect career interruptions, differences in accumulated experience, occupational sorting, or discrimination. Statistically meaningful differences in peak ages suggest distinct career trajectories by gender, reinforcing the role of structural and institutional factors in shaping wage dynamics in Bogotá’s labor market.
+
+\vspace{0.5cm}
+Men and women exhibit different life-cycle earnings profiles, including differences in earnings growth and peak ages. These patterns may reflect career interruptions, differences in accumulated experience, occupational sorting, or discrimination. Statistically meaningful differences in peak ages suggest distinct career trajectories by gender, reinforcing the role of structural and institutional factors in shaping wage dynamics in Bogota’s labor market.
 
 #############################################################################
 
