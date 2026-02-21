@@ -137,8 +137,6 @@ quantile(boot_fwl$t, c(.025,.975))  # IC 95%
 # Tables
 # =============================================================================
 
-ci_fwl <- quantile(boot_fwl$t, c(.025,.975)) # Interval confidence
-
 etable(model1, model4, model5,
        dict = c("log_w"   = "Log Wage",
                 "(Intercept)"        = "Constant",
@@ -148,24 +146,23 @@ etable(model1, model4, model5,
                 "r2"                 = "R-squared",
                 "ar2"                = "Adjusted R-squared",
                 "rmse"               = "Root Mean Squared Error",
-                "n"                  = "Observations"),
-       
-       extralines = list(
-         "Controles laborales" = c("NO", "SI", "SI"),
-         "Controles de cuidado" = c("NO", "NO", "SI"),
-         "Bootstrap 95% CI (FWL)" = c(
-           "",
-           "",
-           paste0("[", round(ci_fwl[1],3), ", ", round(ci_fwl[2],3), "]")
-         )
-       ),
-       
+                "n"                  = "Observations",
+                "FE"                 = "Fixed Effects",
+                "Std. Errors"        = "Standard Errors"),  
+       extralines = list("Controles laborales" = c("NO", "SI", "SI"),
+                         "Controles de cuidado" = c("NO", "NO", "SI") ),
        depvar = TRUE,
        digits = 3,
        fitstat = ~ n + r2 + ar2 + rmse,
        ci = 0.95,              
        se = NULL, 
        style.tex = style.tex("qje"),
-       title = "Estimation Results",
-       file = "02_outputs/tables/03_model_gender_gap.tex",
-       replace = TRUE)
+       title = "Estimation Results", 
+       notes.size = c(
+         "Note: Labor controls: age, age$^2$, educational attainment, employment relationship, occupation, and firm size.",
+         "Care controls: number of minors in the household and number of inactive elderly members.",
+         "Column (1) reports the baseline model; column (2) adds labor controls; column (3) adds care controls."
+       ), 
+       
+       file = "02_outputs/tables/03_model_gender_gap.tex", replace = TRUE)
+
