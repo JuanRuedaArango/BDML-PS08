@@ -1,0 +1,21 @@
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{2}{c}{LOOCV RMSE} & \multicolumn{2}{c}{Test RMSE} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+ & With outliers & Without outliers & With outliers & Without outliers\\
+\midrule
+Modelo 1 & 0.662 & 0.662 & 0.846 & 0.846\\
+Modelo 2 & 0.676 & 0.676 & 0.855 & 0.855\\
+Modelo 3 & 0.399 & 0.399 & 0.666 & 0.666\\
+Modelo 4 & 0.391 & 0.391 & 0.655 & 0.655\\
+Modelo 5 & 0.390 & 0.390 & 0.655 & 0.655\\
+\addlinespace
+Modelo 6 & 0.389 & 0.389 & 0.652 & 0.652\\
+Modelo 7 & 0.390 & 0.390 & 0.653 & 0.653\\
+Modelo 8 & 0.388 & 0.388 & 0.650 & 0.650\\
+Modelo 9 & 0.377 & 0.377 & 0.648 & 0.648\\
+\bottomrule
+\multicolumn{5}{l}{\rule{0pt}{1em}Train Obs. (Outliers-No outliers): 10334-10334}\\
+\multicolumn{5}{l}{\rule{0pt}{1em}Dos observaciones fueron eliminadas en LOOCV para evitar leverage de 1 en el test set}\\
+\end{tabular}

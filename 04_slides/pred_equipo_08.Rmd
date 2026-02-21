@@ -1,5 +1,5 @@
 ---
-title: "Labor Income Prediction"
+title: "**Labor Income Prediction**"
 author: "Sany León, Andrés Suárez, and Juan Rueda"
 date: "`r Sys.Date()`"
 output:
@@ -26,17 +26,6 @@ Can prediction-based income models reliably identify individuals with anomalous 
 
 # **Data**
 
-#############################################################################
-
-# Results
-
-\begin{figure}[h!]
-\centering
-\caption{Income Profile by Sex and Age}
-\includegraphics[width=0.6 \textwidth]{"../02_outputs/figures/age_income_gap_profile.png"}
-\label{fig:age_income_gap}
-\end{figure}
-
 
 #############################################################################
 
@@ -44,9 +33,105 @@ Can prediction-based income models reliably identify individuals with anomalous 
 
 ```{r results='asis', echo=FALSE}
 cat("\\begin{center}\n\\scriptsize\n")
-cat(readLines("../02_outputs/tables/03_model_gender_gap.tex"), sep="\n")
+cat(readLines("../02_outputs/tables/04_prediction_table.tex"), sep="\n")
 cat("\n\\end{center}\n")
 ```
+
+#############################################################################
+
+# Results
+
+## Modelos
+
+\scriptsize
+
+\[
+(1)\quad \log(ingresos_i) = \beta_0 + \beta_1 Edad_i + \beta_2 Edad_i^2 + u_i
+\]
+
+\[
+(2)\quad \ln(salario)_{i,f} = \beta_0 + \beta_1 Mujer_{i,f} + u_i
+\]
+
+\[
+\begin{aligned}
+(3)\quad \ln(salario)_{i,f} =\;& \beta_0 + \beta_1 Mujer_{i,f} + \beta_2 Edad_{i,f} + \beta_3 Edad_{i,f}^2 \\
+&+ \beta_4 NivelEduc_{i,f} + \beta_5 Oficio_{i,f} + \beta_6 Relab_{i,f} \\
+&+ \beta_7 TamFirma_{i,f} + u_i
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+(4)\quad \ln(salario)_{i,f} =\;& \beta_0 + \beta_1 Mujer_{i,f} + \beta_2 Edad_{i,f} + \beta_3 Edad_{i,f}^2 \\
+&+ \beta_4 NivelEduc_{i,f} + \beta_5 Oficio_{i,f} + \beta_6 Relab_{i,f} \\
+&+ \beta_7 TamFirma_{i,f} + \beta_8 NumMen_f + \beta_9 NumMay_f + u_i
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+(5)\quad \log(y_i) =\;& \beta_0 + \beta_1 Sexo_i + \beta_2 Edad_i + \beta_3 Edad_i^2 + \beta_4 Edad_i^3 \\
+&+ \beta_5 NivelEduc_i + \beta_6 Oficio_i + \beta_7 Relab_i \\
+&+ \beta_8 TamFirma_i + \beta_9 Formalidad_i + u_i
+\end{aligned}
+\]
+
+#############################################################################
+
+# Results
+
+## Modelos
+
+\scriptsize
+
+\[
+\begin{aligned}
+(6)\quad \log(y_i) =\;& \beta_0 + \beta_1 Sexo_i + \beta_2 Edad_i + \beta_3 Edad_i^2 \\
+&+ \beta_4 (NivelEduc_i \times Formalidad_i) \\
+&+ \beta_5 Oficio_i + \beta_6 Relab_i + \beta_7 TamFirma_i + u_i
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+(7)\quad \log(y_i) =\;& \beta_0 + \beta_1 Sexo_i + \beta_2 Edad_i + \beta_3 Edad_i^2 \\
+&+ \beta_4 NivelEduc_i + \beta_5 Oficio_i \\
+&+ \beta_6 (Relab_i \times TamFirma_i) + \beta_7 Formalidad_i + u_i
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+(8)\quad \log(y_i) =\;& \beta_0 + \beta_1 Sexo_i + \beta_2 Edad_i + \beta_3 Edad_i^2 \\
+&+ \beta_4 Oficio_i + \beta_5 Formalidad_i \\
+&+ \beta_6 (NivelEduc_i \times Formalidad_i) \\
+&+ \beta_7 (Relab_i \times TamFirma_i) + u_i
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+(9)\quad \log(y_i) =\;& \beta_0 + \beta_1 Sexo_i + \beta_2 Edad_i + \beta_3 Edad_i^2 \\
+&+ \beta_4 Oficio_i + \beta_5 Formalidad_i \\
+&+ \beta_6 (NivelEduc_i \times Formalidad_i \times Edad_i) \\
+&+ \beta_7 (Relab_i \times TamFirma_i \times Edad_i) + u_i
+\end{aligned}
+\]
+
+#############################################################################
+
+
+# Results
+
+\begin{figure}[h!]
+\centering
+\caption{Distribution of the Prediction Residuals of Model from Equation (9)}
+\includegraphics[width=0.6 \textwidth]{"../02_outputs/figures/histograma_residuales.png"}
+\label{fig:age_income_gap}
+\note{Note: The figure shows the distribution of the best-performing prediction model, distinguishing between the full sample and the sample excluding high-leverage observations.}
+\end{figure}
+
 
 
 #############################################################################
