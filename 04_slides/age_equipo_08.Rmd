@@ -92,18 +92,37 @@ In contrast, the linear model fails to capture this non-linearity and exhibits v
 
 ### 2. Effect of Conditioning on Hours Worked and Employment Type
 
+\vspace{0.5cm}
 Including controls for hours worked and employment type shifts the estimated **earnings peak to slightly older ages (approximately 41–43 years)** and substantially improves model fit.  
 
+\vspace{0.5cm}
 This suggests that part of the observed non-linearity is driven by differences in labor intensity and occupational structure, rather than solely by human capital accumulation.
 
-### 3. Economic Interpretation in the Context of Bogotá’s Labor Market
+\vspace{0.5cm}
+- Including hours worked as a control is crucial, since “any analysis of labor supply requires an understanding of … hours of work” (Blundell & MaCurdy, 1999).
 
+
+#############################################################################
+
+# **Discussion**
+
+### 3. Economic Interpretation in the Context of Bogota’s Labor Market
+
+\vspace{0.5cm}
 The results support the theoretical prediction of a concave life-cycle earnings profile. However, the shape of the profile is influenced by labor market characteristics such as occupational heterogeneity and variation in working hours.  
 
+\vspace{0.5cm}
 Overall, the observed age–income pattern reflects both experience accumulation and structural labor market factors.
+
+\vspace{0.5cm}
+- This result is consistent with Bogota’s labor-market structure, where informality is substantial: “Medellín or Bogotá, have [informality] rates of about 50%” (García, 2013).
 
 #############################################################################
 
 # **References**
 
 Mincer, J. A. (1974). Schooling, Experience, and Earnings. National Bureau of Economic Research.
+
+Blundell, R., & MaCurdy, T. (1999). Labor supply: A review of alternative approaches. In O. Ashenfelter & D. Card (Eds.), Handbook of Labor Economics (Vol. 3A). Elsevier.
+
+García, G. A. (2013). Labor informality: choice or sign of segmentation? A Quantile Regression Approach at the Regional Level for Colombia (Preliminary version).
