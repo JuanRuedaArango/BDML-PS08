@@ -275,16 +275,16 @@ etable(
   
   dict = c(
     "log_w"        = "Log Monthly Labor Income",
-    "(Intercept)"  = "Constant",
-    age            = "Age",
-    age2           = "Age squared",
-    total_hours    = "Total hours worked",
-    "relab "       = "",
-    sexFemale      = "Female",
-    r2             = "R²",
-    ar2            = "Adjusted R²",
-    rmse           = "Root Mean Squared Error",
-    n              = "Number of observations"
+    "(Intercept)" = "Constant",
+    age           = "Age",
+    age2          = "Age squared",
+    total_hours   = "Total hours worked",
+    "relab "    ="",      
+    sexFemale     = "Female",
+    r2            = "R²",
+    ar2           = "Adjusted R²",
+    rmse          = "Root Mean Squared Error",
+    n             = "Number of observations"
   ),
   
   headers = c(
@@ -306,20 +306,39 @@ etable(
 
 #Additional another format table
 
+extra_rows <- data.frame(
+  term = c("Implied peak age", "95% CI (peak age)"),
+  check.names = FALSE
+)
+
+extra_rows[["Linear<br>(Unconditional)"]] <- c("", "")
+extra_rows[["Quadratic<br>(Unconditional)"]] <- c(
+  round(peak_hat, 2),
+  paste0("[", round(ci_uncond[1], 2), ", ", round(ci_uncond[2], 2), "]")
+)
+extra_rows[["Quadratic<br>(Conditional)"]] <- c(
+  round(peak_hat_cond, 2),
+  paste0("[", round(ci_cond[1], 2), ", ", round(ci_cond[2], 2), "]")
+)
+
+
 modelsummary(
   list(
     "Linear<br>(Unconditional)"    = model_fe,
     "Quadratic<br>(Unconditional)" = model1_fe,
     "Quadratic<br>(Conditional)"   = model2_fe
-    ),
+  ),
+  
+  add_rows = extra_rows,   # 👈 ESTA LÍNEA ES LA QUE FALTA
+  
   output = "02_outputs/tables/02_model_age_income_peak.md",
+  
   coef_map = c(
     "(Intercept)" = "Constante",
     age           = "Age",
     age2          = "Age square",
     total_hours   = "Total hours worked",
     
-    # Labels mapping for relab
     "relabObreroempleadodeempresaparticular" = "Private firm employee",
     "relabTrabajadorporcuentapropia"        = "Self-employed",
     "relabEmpleadodoméstico"                 = "Domestic worker",
@@ -327,14 +346,13 @@ modelsummary(
     "relabOtro"                              = "Other",
     "relabJornaleroopeón"                    = "Day laborer",
     
-    # Gender
     sexFemenino   = "Female",
     sexMasculino  = "Male"
   ),
+  
   stars = c(`*` = 0.1, `**` = 0.05, `***` = 0.01),
   fmt = 3
 )
-
 
 ## ===============================================================
 ## 5. Visualization: age–labor income profiles (WITH CI)
