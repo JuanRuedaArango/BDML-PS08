@@ -1,8 +1,25 @@
 # =============================================================================
-# Project:        PS – Prediction Income
+# Project:        PS – Income Prediction
+#
+# Script:         01_descriptive_statistics.R
+#
+# Description:    Generates descriptive statistics tables for continuous and
+#                 categorical variables used in the income prediction analysis.
+#
+# Authors:        Sany, Andrés, Juan
+# Affiliation:    Universidad de los Andes
+#
+# Created:        2026-02-07
+# Last updated:   2026-02-21
+#
+# Outputs:
+#   - 02_outputs/tables/01_tabla_continuas.tex
+#   - 02_outputs/tables/01_tabla_categoricas.tex
 # =============================================================================
 
-### 1. Setup -------------------------------------------------------------------
+# =============================================================================
+## 1. Setup 
+# =============================================================================
 
 rm(list = ls())
 
@@ -10,7 +27,9 @@ library(pacman)
 p_load(tidyverse, rio, janitor, data.table, moments,
        modelsummary, gt)
 
-### 2. Load data ----------------------------------------------------------------
+# =============================================================================
+### 2. Load data 
+# =============================================================================
 
 df <- import('00_data/01_main_data.rds', setclass = 'tibble') %>% 
   select(-directorio, -secuencia_p, -orden, -f_weights)
@@ -48,7 +67,6 @@ table_continuous <- datasummary(
 
 table_continuous_gt <- table_continuous %>%
   gt() %>%
-  tab_header(title = "Distribución de las variables numéricas") %>%
   tab_options(
     latex.use_longtable = FALSE,
     table.font.size = px(5)   # Tamaño ideal para Beamer

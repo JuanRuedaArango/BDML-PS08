@@ -13,7 +13,7 @@
 # Script type:    Data acquisition and preparation
 #
 # Reproducibility:
-#   - R version:      ≥ 4.0
+#   - R version:      ≥ 4.2
 #   - Seed:           set.seed(369)
 #
 # Output:

@@ -37,6 +37,8 @@ cat(readLines("../02_outputs/tables/04_prediction_table.tex"), sep="\n")
 cat("\n\\end{center}\n")
 ```
 
+Model 9 achieves the lowest validation RMSE (0.648). Notably, its LOOCV RMSE (0.377) is considerably smaller, indicating that LOOCV may understate the true out-of-sample prediction error relative to the validation-sample benchmark.
+
 #############################################################################
 
 # Results

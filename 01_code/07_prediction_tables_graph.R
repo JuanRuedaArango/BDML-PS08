@@ -1,24 +1,33 @@
 # =============================================================================
-# Project:        PS – Prediction Income
+# Project:        PS – Income Prediction
 #
-# Description:    Estimation of the age–labor income profile and peak age
-#                 using OLS and bootstrap methods
+# Script:         04_prediction_evaluation.R
 #
-# Authors:        Sany, Andrés, and Juan
+# Description:    Compares model predictive performance using test RMSE and
+#                 LOOCV RMSE, with and without high-leverage observations.
+#                 Also analyzes residual distribution and skewness.
+#
+# Authors:        Sany, Andrés, Juan
 # Affiliation:    Universidad de los Andes
 #
 # Created:        2026-02-07
-# Last updated:   2026-02-08
+# Last updated:   2026-02-21
 #
 # Script type:    Estimation and inference
 #
 # Reproducibility:
-#   - R version:      ≥ 4.2.0
+#   - R version ≥ 4.2.0
+#   - Seed set for reproducibility: 1369
 #
-# Output:
-#   - Unconditional age–income regression
+# Inputs:
+#   - 00_data/01_main_data.rds
+#   - 02_outputs/01_test_metrics.rds
+#   - 02_outputs/02_test_metrics_without_high_leverage.rds
+#
+# Outputs:
+#   - 02_outputs/tables/04_prediction_table.tex
+#   - 02_outputs/figures/histograma_residuales.png
 # =============================================================================
-
 
 ### setup
 cat("\f")
@@ -28,20 +37,20 @@ p_load(tidyverse, rio, tidymodels, yardstick, fixest, kableExtra, moments)
 options(scipen =  999)
 
 
-##==: 1. Import data
+## 1. Import data
 data = import("00_data/01_main_data.rds")
 resultados_modelos = import("02_outputs/01_test_metrics.rds")
 resultados_modelos_sin_outlieres = import("02_outputs/02_test_metrics_without_high_leverage.rds")
 
-##==: 2. test vs train set     
+## 2. test vs train set     
 
-# separar por grupos 
+# grouping
 set.seed(1369)
 split = initial_split(data, prop = 0.7)
 train = training(split)
 test = testing(split)
 
-##==: 3. tabla de error  
+## 3. error table   
 tabla = lapply(X = 1:length(resultados_modelos), FUN = function(x) {
   metric = resultados_modelos[[x]]$metric  
   modelo = resultados_modelos[[x]]$modelo
@@ -106,18 +115,18 @@ tabla = tabla |>
     escape = FALSE
   )
 
-##==: 4. grafico de residuos
+## 4. resid grafico 
 writeLines(text = tabla,con = "02_outputs/tables/04_prediction_table.tex")
 tabla = readLines("02_outputs/tables/04_prediction_table.tex")
 tabla = tabla[-c(1,length(tabla))]
 writeLines(text = tabla, con = "02_outputs/tables/04_prediction_table.tex")
 
 
-#===============================================================================
-#GRAPH
-#===============================================================================
+#============================================================
+#GRAPH 
+#============================================================
 
-##==: 2.prepare data
+##: 2.prepare data
 m_completa = tibble(proviene = "Muestra Completa", 
                     residuales = resultados_modelos[[9]]$modelo$residuals)
 
@@ -143,6 +152,5 @@ plot = ggplot(output, aes(x = residuales)) +
             aes(x = 0, y = Inf,
                 label = paste0("Skewness = ", skew)),
             vjust = 1.5, inherit.aes = FALSE)
-
 
 ggsave(plot, file = "02_outputs/figures/histograma_residuales.png", width = 10, height = 8, units = "in", dpi = 300)
