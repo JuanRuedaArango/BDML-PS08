@@ -10,6 +10,7 @@ This repository contains the complete workflow developed to solve Problem Set 1 
 Please run the code contained in the script <i>00_rundirectory.R to replicate the results.
 
 <!---------------------------->
+<!---------------------------->
 
 ## Descripción de carpetas:
 -   00_data: funciones de scraping para extraer la información. Saving intermediate data.
@@ -29,10 +30,52 @@ source("01_code/00_rundirectory.R")
 
 00_rundirectory.R: master script, run to reproduce all results
 
-00_descriptive.R:
-01_data_scraper.r: scrapes the data from https://ignaciomsarmiento.github.io/GEIH2018_sample/
-02_clean_data.r:
-03_reg_wage_age.r:
-04_reg_wage_age_gap.R:
-05_reg_peak_age_gap_graph.R:
-05_reg_section3.R:
+01_data_scraper.r: Data scraping and preprocessing from Ignacio's public repository for propensity score estimation in income-related outcomes.
+
+02_clean_data.r: Data cleaning, variable construction, and preprocessing of the raw dataset obtained from Ignacio's public repository.
+
+03_reg_wage_age.r: Baseline estimation of the age–labor income profile using OLS and bootstrap methods. 
+
+04_reg_wage_age_gap.R: Estimation of gender wage gaps across the life cycle using age–income regressions.
+
+05_reg_peak_age_gap_graph.R: Visualization of the age–labor income profile and estimated peak age (OLS and bootstrap).
+
+06_prediction.R: Out-of-sample prediction exercise and model comparison for income outcomes. 
+
+07_prediction_tables_graph.R: Generation of prediction tables, residual diagnostics, and evaluation graphs.
+
+
+<!---------------------------->
+
+## Estructura de Carpetas:
+
+
+📂 00_data
+│   └── Raw and processed datasets
+│
+📂 01_code
+│   ├── Data scraping scripts
+│   ├── Data cleaning scripts
+│   └── Auxiliary scripts
+│
+📂 02_outputs
+│   ├── 📂 tables
+│   │   └── LaTeX and summary tables
+│   └── 📂 figures
+│       └── Generated plots and graphs
+│
+📂 03_regression
+│   ├── Wage–age profile estimations
+│   ├── Wage gap regressions
+│   └── Peak age analysis
+│
+📂 04_slides
+│   └── Presentation materials
+│
+📂 99_additional
+│   └── Supplementary material
+│
+📄 00_rundirectory.R  
+📄 BDML-PS08.Rproj  
+📄 README.md  
+📄 LICENSE
