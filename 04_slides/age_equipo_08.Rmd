@@ -14,9 +14,11 @@ header-includes:
   - \useoutertheme{infolines}
   - \usepackage{booktabs}
   - \usepackage{graphicx}
-  - \usepackage{threeparttable}
+#  - \usepackage{threeparttable}
   - \usepackage{booktabs}
  # - \usepackage{longtable}
+  - \usepackage{float}
+  - \usepackage{placeins}
 ---
 
 # **Research Question**
@@ -31,7 +33,7 @@ Is there empirical evidence of a non-linear (concave) relationship between age a
 
 # **Data**
 ```{r results='asis', echo=FALSE}
-cat("\\begin{table}[H]\n")
+cat("\\begin{table}[!htbp]\n")
 cat("\\centering\n")
 cat("\\caption{Summary statistics for continuous variables}\n")
 cat("\\label{tab:desc_continuous}\n")
@@ -41,12 +43,11 @@ cat("\n\\end{table}\n")
 ```
 
 
-
 #############################################################################
 
-## **Data**
+# **Data**
 ```{r results='asis', echo=FALSE}
-cat("\\begin{table}[H]\n")
+cat("\\begin{table}[!htbp]\n")
 cat("\\centering\n")
 cat("\\caption{Distribution of categorical variables}\n")
 cat("\\label{tab:desc_categorical}\n")

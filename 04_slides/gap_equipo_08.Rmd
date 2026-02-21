@@ -20,14 +20,10 @@ header-includes:
 #############################################################################
 # **Research Question**
 
-## ¿How does wage vary with age in Bogota?
+To what extent do labor income models capture the structural determinants of income, and how does the balance between their interpretability and predictive accuracy affect their usefulness for policymaking?
 
-\vspace{0.5cm}
-To what extent are gender differences in labor income explained by observable characteristics versus residual structural heterogeneity?
+How are gender differences in labor income explained by observable characteristics versus residual structural heterogeneity?
 
-#############################################################################
-
-# **Data**
 
 #############################################################################
 
